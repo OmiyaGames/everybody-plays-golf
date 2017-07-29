@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace LudumDare39
 {
@@ -24,9 +22,10 @@ namespace LudumDare39
         private void Start()
         {
             mousePlane = new Plane(Vector3.up, raycastPlane.position);
+            HasLocation = false;
         }
 
-        // Update is called once per frame
+#if !SERVER
         void Update()
         {
             mouseRay = raycastCamera.ScreenPointToRay(Input.mousePosition);
@@ -36,5 +35,6 @@ namespace LudumDare39
                 transform.position = mouseRay.GetPoint(distance);
             }
         }
+#endif
     }
 }
