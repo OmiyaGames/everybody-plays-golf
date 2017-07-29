@@ -75,8 +75,9 @@ GameObject:
   - component: {fileID: 135190641403247702}
   - component: {fileID: 23224842893963284}
   - component: {fileID: 54561615097833912}
+  - component: {fileID: 114873106809671068}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -280,6 +281,19 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1566915467263044}
   m_Enabled: 1
+--- !u!114 &114873106809671068
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1959783378271600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30d1a4414a894114b8233cf4f33bd284, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxImpulse: 10
+  cursor: {fileID: 114991538840639350}
 --- !u!114 &114991538840639350
 MonoBehaviour:
   m_ObjectHideFlags: 1
