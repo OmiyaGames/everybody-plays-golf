@@ -39,7 +39,7 @@ namespace LudumDare39
             // Flag that we're resetting
             timeTriggered = Time.time;
 
-#if Server
+#if SERVER
             // Wait for a bit
             yield return WaitBeforeReset;
 

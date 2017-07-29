@@ -15,8 +15,8 @@
             new OmiyaGames.Settings.AddAudioSettings(),
             new OmiyaGames.Settings.AddLocalAnalytics(),
             new OmiyaGames.Settings.AddLanguageSettings(),
-            new LudumDare38.AddHighScores(),
-            new LudumDare38.AddOptions(),
+            new LudumDare39.AddHighScores(),
+            new LudumDare39.AddOptions(),
         };
 
         /// <summary>

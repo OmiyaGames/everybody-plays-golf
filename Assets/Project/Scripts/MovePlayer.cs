@@ -1,29 +1,38 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections;
 
 namespace LudumDare39
 {
+    [RequireComponent(typeof(SyncPlayer))]
     [RequireComponent(typeof(Rigidbody))]
     public class MovePlayer : MonoBehaviour
     {
         public const string MaxImpulseField = "MaxImpulseForce";
         public const string DragField = "PlayerDrag";
 
+        static MovePlayer instance = null;
+
         [SerializeField]
         float maxImpulse = 10f;
         [SerializeField]
         float defaultDrag = 1f;
         [SerializeField]
-        Vector3 startingPosition;
-        [SerializeField]
-        MoveCursor cursor;
-        [SerializeField]
         float checkForDragEverySeconds = 5f;
 
+        SyncPlayer syncInfo = null;
         Rigidbody body = null;
         WaitForSeconds waitEvery = null;
 
         #region Properties
+        public static MovePlayer Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+
         Rigidbody Body
         {
             get
@@ -63,12 +72,24 @@ namespace LudumDare39
                 return waitEvery;
             }
         }
+
+        public SyncPlayer SyncedInfo
+        {
+            get
+            {
+                if(syncInfo == null)
+                {
+                    syncInfo = GetComponent<SyncPlayer>();
+                }
+                return syncInfo;
+            }
+        }
         #endregion
 
         public void Reset()
         {
             Body.isKinematic = true;
-            transform.position = startingPosition;
+            transform.position = SyncedInfo.StartingPosition;
             Body.velocity = Vector3.zero;
             Body.isKinematic = false;
         }
@@ -89,19 +110,27 @@ namespace LudumDare39
         #region Unity Events
         private void Start()
         {
-            Reset();
+            // Setup instance
+            instance = this;
+
 #if SERVER
             RemoteSettings.Updated += RemoteSettings_Updated;
             StartCoroutine(QueryRemoteSettings());
 #endif
+
+            // Focus the camera on the player
+            if (MoveCamera.Instance)
+            {
+                MoveCamera.Instance.FocusOnPlayer();
+            }
         }
 
 #if !SERVER || UNITY_EDITOR
         void Update()
         {
-            if ((Input.GetMouseButtonUp(0) == true) && (cursor.HasLocation == true))
+            if ((MoveCursor.Instance != null) && (Input.GetMouseButtonUp(0) == true) && (MoveCursor.Instance.HasLocation == true))
             {
-                MoveTowards(cursor.transform.position);
+                MoveTowards(MoveCursor.Instance.transform.position);
             }
         }
 #endif
@@ -124,13 +153,5 @@ namespace LudumDare39
         }
 #endif
         #endregion
-
-#if UNITY_EDITOR
-        [ContextMenu("Set Starting Position")]
-        public void SetStartingPosition()
-        {
-            startingPosition = transform.position;
-        }
-#endif
     }
 }
