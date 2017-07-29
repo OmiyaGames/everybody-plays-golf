@@ -5,26 +5,56 @@ namespace LudumDare39
     [RequireComponent(typeof(Rigidbody))]
     public class MovePlayer : MonoBehaviour
     {
+        public const string MaxImpulseField = "MaxImpulseForce";
+        public const string DragField = "PlayerDrag";
+
         [SerializeField]
         float maxImpulse = 10f;
+        [SerializeField]
+        float defaultDrag = 1f;
         [SerializeField]
         Vector3 startingPosition;
         [SerializeField]
         MoveCursor cursor;
 
-        Rigidbody body;
+        Rigidbody body = null;
 
-        private void Start()
+        #region Properties
+        Rigidbody Body
         {
-            body = GetComponent<Rigidbody>();
+            get
+            {
+                if(body == null)
+                {
+                    body = GetComponent<Rigidbody>();
+                }
+                return body;
+            }
         }
+
+        public float MaxImpulse
+        {
+            get
+            {
+                return RemoteSettings.GetFloat(MaxImpulseField, maxImpulse);
+            }
+        }
+
+        public float Drag
+        {
+            get
+            {
+                return RemoteSettings.GetFloat(DragField, defaultDrag);
+            }
+        }
+        #endregion
 
         public void Reset()
         {
-            body.isKinematic = true;
+            Body.isKinematic = true;
             transform.position = startingPosition;
-            body.velocity = Vector3.zero;
-            body.isKinematic = false;
+            Body.velocity = Vector3.zero;
+            Body.isKinematic = false;
         }
 
         public void MoveTowards(Vector3 position)
@@ -35,8 +65,14 @@ namespace LudumDare39
         public void Move(Vector3 direction)
         {
             direction.Normalize();
-            direction *= maxImpulse;
-            body.AddForce(direction, ForceMode.VelocityChange);
+            direction *= MaxImpulse;
+            Body.AddForce(direction, ForceMode.VelocityChange);
+        }
+
+        #region Unity Events
+        private void FixedUpdate()
+        {
+            Body.drag = Drag;
         }
 
 #if !SERVER
@@ -48,6 +84,7 @@ namespace LudumDare39
             }
         }
 #endif
+        #endregion
 
 #if UNITY_EDITOR
         [ContextMenu("Set Starting Position")]
