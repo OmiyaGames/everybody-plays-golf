@@ -11,7 +11,7 @@ public class MoveCursor : MonoBehaviour
     [SerializeField]
     float raycastDistance = 100f;
 
-    public bool IsActive
+    public bool HasLocation
     {
         get;
         set;
@@ -24,8 +24,8 @@ public class MoveCursor : MonoBehaviour
 	void Update ()
     {
         mouseRay = raycastCamera.ScreenPointToRay(Input.mousePosition);
-        IsActive = Physics.Raycast(mouseRay, out mouseHit, raycastDistance, raycastLayer.value);
-        if (IsActive == true)
+        HasLocation = Physics.Raycast(mouseRay, out mouseHit, raycastDistance, raycastLayer.value);
+        if (HasLocation == true)
         {
             transform.position = mouseHit.point;
         }
