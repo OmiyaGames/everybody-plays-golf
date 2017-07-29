@@ -19,14 +19,23 @@ namespace LudumDare39
             body = GetComponent<Rigidbody>();
         }
 
+        public void MoveTowards(Vector3 position)
+        {
+            Move(position - transform.position);
+        }
+
+        public void Move(Vector3 direction)
+        {
+            direction.Normalize();
+            direction *= maxImpulse;
+            body.AddForce(direction, ForceMode.VelocityChange);
+        }
+
         void Update()
         {
             if ((Input.GetMouseButtonUp(0) == true) && (cursor.HasLocation == true))
             {
-                Vector3 direction = cursor.transform.position - transform.position;
-                direction.Normalize();
-                direction *= maxImpulse;
-                body.AddForce(direction, ForceMode.VelocityChange);
+                MoveTowards(cursor.transform.position);
             }
         }
     }
