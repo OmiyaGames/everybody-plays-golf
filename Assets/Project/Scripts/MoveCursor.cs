@@ -2,32 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveCursor : MonoBehaviour
+namespace LudumDare39
 {
-    [SerializeField]
-    Camera raycastCamera;
-    [SerializeField]
-    LayerMask raycastLayer;
-    [SerializeField]
-    float raycastDistance = 100f;
-
-    public bool HasLocation
+    public class MoveCursor : MonoBehaviour
     {
-        get;
-        set;
-    }
+        [SerializeField]
+        Camera raycastCamera;
+        [SerializeField]
+        LayerMask raycastLayer;
+        [SerializeField]
+        float raycastDistance = 100f;
 
-    Ray mouseRay;
-    RaycastHit mouseHit;
-
-	// Update is called once per frame
-	void Update ()
-    {
-        mouseRay = raycastCamera.ScreenPointToRay(Input.mousePosition);
-        HasLocation = Physics.Raycast(mouseRay, out mouseHit, raycastDistance, raycastLayer.value);
-        if (HasLocation == true)
+        public bool HasLocation
         {
-            transform.position = mouseHit.point;
+            get;
+            set;
         }
-	}
+
+        Ray mouseRay;
+        RaycastHit mouseHit;
+
+        // Update is called once per frame
+        void Update()
+        {
+            mouseRay = raycastCamera.ScreenPointToRay(Input.mousePosition);
+            HasLocation = Physics.Raycast(mouseRay, out mouseHit, raycastDistance, raycastLayer.value);
+            if (HasLocation == true)
+            {
+                transform.position = mouseHit.point;
+            }
+        }
+    }
 }

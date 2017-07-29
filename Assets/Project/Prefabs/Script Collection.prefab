@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 124991953973608154}
   - component: {fileID: 92293936698287620}
   - component: {fileID: 81569355825942834}
-  - component: {fileID: 114545775782451896}
+  - component: {fileID: 114628587462906408}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -78,7 +78,7 @@ GameObject:
   - component: {fileID: 54561615097833912}
   - component: {fileID: 114873106809671068}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Golf Ball
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -282,7 +282,7 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1566915467263044}
   m_Enabled: 1
---- !u!114 &114545775782451896
+--- !u!114 &114628587462906408
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -290,11 +290,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1566915467263044}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 246cc59c7a84ea44f87f6b70acfe30c5, type: 3}
+  m_Script: {fileID: 11500000, guid: 935b093245bbd97408edcc7fa35cd2ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 4496446362030992}
   offset: {x: 8.7, y: 12.754, z: 0}
+  slerpMultiplier: 5
 --- !u!114 &114873106809671068
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -306,7 +307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d1a4414a894114b8233cf4f33bd284, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxImpulse: 5
+  maxImpulse: 2.5
   cursor: {fileID: 114991538840639350}
 --- !u!114 &114991538840639350
 MonoBehaviour:
@@ -337,7 +338,7 @@ SphereCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1959783378271600}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 8a9828d1e1827b842b72126e124bf517, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2

@@ -2,29 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
-public class MovePlayer : MonoBehaviour
+namespace LudumDare39
 {
-    [SerializeField]
-    float maxImpulse = 10f;
-    [SerializeField]
-    MoveCursor cursor;
-
-    Rigidbody body;
-
-    private void Start()
+    [RequireComponent(typeof(Rigidbody))]
+    public class MovePlayer : MonoBehaviour
     {
-        body = GetComponent<Rigidbody>();
-    }
+        [SerializeField]
+        float maxImpulse = 10f;
+        [SerializeField]
+        MoveCursor cursor;
 
-    void Update ()
-    {
-		if((Input.GetMouseButtonUp(0) == true) && (cursor.HasLocation == true))
+        Rigidbody body;
+
+        private void Start()
         {
-            Vector3 direction = cursor.transform.position - transform.position;
-            direction.Normalize();
-            direction *= maxImpulse;
-            body.AddForce(direction, ForceMode.VelocityChange);
+            body = GetComponent<Rigidbody>();
         }
-	}
+
+        void Update()
+        {
+            if ((Input.GetMouseButtonUp(0) == true) && (cursor.HasLocation == true))
+            {
+                Vector3 direction = cursor.transform.position - transform.position;
+                direction.Normalize();
+                direction *= maxImpulse;
+                body.AddForce(direction, ForceMode.VelocityChange);
+            }
+        }
+    }
 }
