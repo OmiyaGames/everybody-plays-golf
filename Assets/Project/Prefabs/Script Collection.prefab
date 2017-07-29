@@ -606,7 +606,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 114873106809671068}
-  delayResetbySeconds: 0.5
+  delayResetbySeconds: 3
 --- !u!114 &114873106809671068
 MonoBehaviour:
   m_ObjectHideFlags: 1
