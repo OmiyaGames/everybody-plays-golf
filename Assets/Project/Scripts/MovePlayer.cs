@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace LudumDare39
 {
@@ -23,7 +21,6 @@ namespace LudumDare39
 
         public void Reset()
         {
-            Debug.Log("Resetting player position");
             body.isKinematic = true;
             transform.position = startingPosition;
             body.velocity = Vector3.zero;
@@ -42,6 +39,7 @@ namespace LudumDare39
             body.AddForce(direction, ForceMode.VelocityChange);
         }
 
+#if !SERVER
         void Update()
         {
             if ((Input.GetMouseButtonUp(0) == true) && (cursor.HasLocation == true))
@@ -49,7 +47,7 @@ namespace LudumDare39
                 MoveTowards(cursor.transform.position);
             }
         }
-
+#endif
 
 #if UNITY_EDITOR
         [ContextMenu("Set Starting Position")]

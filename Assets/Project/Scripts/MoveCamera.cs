@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace LudumDare39
 {
@@ -13,6 +11,7 @@ namespace LudumDare39
         [SerializeField]
         float slerpMultiplier = 5f;
 
+#if !SERVER
         Vector3 targetPosition;
 
         void FixedUpdate()
@@ -20,6 +19,7 @@ namespace LudumDare39
             targetPosition = target.position + offset;
             transform.position = Vector3.Slerp(transform.position, targetPosition, Time.deltaTime * slerpMultiplier);
         }
+#endif
 
 #if UNITY_EDITOR
         [ContextMenu("Set Offset")]

@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace LudumDare39
@@ -29,10 +28,8 @@ namespace LudumDare39
 
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log("Detected something...");
             if ((other.CompareTag("Player") == true) && (timeTriggered < 0f))
             {
-                Debug.Log("It was the player!");
                 StartCoroutine(DelayReset());
             }
         }
