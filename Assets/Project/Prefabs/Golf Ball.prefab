@@ -172,8 +172,8 @@ MonoBehaviour:
     i13: 35
     i14: 150
     i15: 237
-  m_ServerOnly: 1
-  m_LocalPlayerAuthority: 0
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 1
 --- !u!114 &114355171533058024
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -200,7 +200,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxImpulse: 2
   defaultDrag: 1
-  startingPosition: {x: 25.1, y: 1.454, z: -33.4}
   checkForDragEverySeconds: 60
 --- !u!114 &114716080974506930
 MonoBehaviour:

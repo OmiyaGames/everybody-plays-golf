@@ -140,7 +140,6 @@ namespace LudumDare39
             instance = this;
         }
 
-#if !SERVER || UNITY_EDITOR
         private void Update()
         {
             if ((MovePlayer.Instance) && (isSetup == false))
@@ -155,7 +154,6 @@ namespace LudumDare39
         {
             transform.position = Vector3.Slerp(transform.position, TargetPosition, Time.deltaTime * slerpMultiplier);
         }
-#endif
         #endregion
 
         private void AdjustZoomMultiplier()
