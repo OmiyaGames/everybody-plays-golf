@@ -10,6 +10,8 @@ namespace LudumDare39
         [SerializeField]
         float maxImpulse = 10f;
         [SerializeField]
+        Vector3 startingPosition;
+        [SerializeField]
         MoveCursor cursor;
 
         Rigidbody body;
@@ -17,6 +19,15 @@ namespace LudumDare39
         private void Start()
         {
             body = GetComponent<Rigidbody>();
+        }
+
+        public void Reset()
+        {
+            Debug.Log("Resetting player position");
+            body.isKinematic = true;
+            transform.position = startingPosition;
+            body.velocity = Vector3.zero;
+            body.isKinematic = false;
         }
 
         public void MoveTowards(Vector3 position)
@@ -38,5 +49,14 @@ namespace LudumDare39
                 MoveTowards(cursor.transform.position);
             }
         }
+
+
+#if UNITY_EDITOR
+        [ContextMenu("Set Starting Position")]
+        public void SetStartingPosition()
+        {
+            startingPosition = transform.position;
+        }
+#endif
     }
 }
