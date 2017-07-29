@@ -9,9 +9,7 @@ namespace LudumDare39
         [SerializeField]
         Camera raycastCamera;
         [SerializeField]
-        LayerMask raycastLayer;
-        [SerializeField]
-        float raycastDistance = 100f;
+        Transform raycastPlane;
 
         public bool HasLocation
         {
@@ -19,17 +17,23 @@ namespace LudumDare39
             set;
         }
 
+        float distance;
         Ray mouseRay;
-        RaycastHit mouseHit;
+        Plane mousePlane;
+
+        private void Start()
+        {
+            mousePlane = new Plane(Vector3.up, raycastPlane.position);
+        }
 
         // Update is called once per frame
         void Update()
         {
             mouseRay = raycastCamera.ScreenPointToRay(Input.mousePosition);
-            HasLocation = Physics.Raycast(mouseRay, out mouseHit, raycastDistance, raycastLayer.value);
+            HasLocation = mousePlane.Raycast(mouseRay, out distance);
             if (HasLocation == true)
             {
-                transform.position = mouseHit.point;
+                transform.position = mouseRay.GetPoint(distance);
             }
         }
     }

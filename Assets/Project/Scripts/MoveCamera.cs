@@ -20,5 +20,13 @@ namespace LudumDare39
             targetPosition = target.position + offset;
             transform.position = Vector3.Slerp(transform.position, targetPosition, Time.deltaTime * slerpMultiplier);
         }
+
+#if UNITY_EDITOR
+        [ContextMenu("Set Offset")]
+        public void SetOffset()
+        {
+            offset = transform.localPosition;
+        }
+#endif
     }
 }
