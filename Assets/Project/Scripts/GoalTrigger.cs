@@ -39,6 +39,7 @@ namespace LudumDare39
             // Flag that we're resetting
             timeTriggered = Time.time;
 
+#if Server
             // Wait for a bit
             yield return WaitBeforeReset;
 
@@ -50,6 +51,10 @@ namespace LudumDare39
 
             // Indicate we've resetted fully
             timeTriggered = -1f;
+#else
+            // Wait for a frame
+            yield return null;
+#endif
         }
     }
 }

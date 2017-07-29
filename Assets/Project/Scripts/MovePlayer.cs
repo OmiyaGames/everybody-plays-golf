@@ -96,7 +96,7 @@ namespace LudumDare39
 #endif
         }
 
-#if !SERVER
+#if !SERVER || UNITY_EDITOR
         void Update()
         {
             if ((Input.GetMouseButtonUp(0) == true) && (cursor.HasLocation == true))
