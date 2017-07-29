@@ -84,7 +84,19 @@ namespace LudumDare39
                 return syncInfo;
             }
         }
-        #endregion
+
+        public bool CanMove
+        {
+            get
+            {
+#if !SERVER || UNITY_EDITOR
+                return ((MoveCursor.Instance != null) && (MoveCursor.Instance.HasLocation == true));
+#else
+                return ((MoveCursor.Instance != null) && (MoveCursor.Instance.HasLocation == true));
+#endif
+            }
+        }
+#endregion
 
         public void Reset()
         {
@@ -107,7 +119,7 @@ namespace LudumDare39
             Body.AddForce(direction, ForceMode.VelocityChange);
         }
 
-        #region Unity Events
+#region Unity Events
         private void Start()
         {
             // Setup instance
@@ -125,18 +137,23 @@ namespace LudumDare39
             }
         }
 
-#if !SERVER || UNITY_EDITOR
         void Update()
         {
-            if ((MoveCursor.Instance != null) && (Input.GetMouseButtonUp(0) == true) && (MoveCursor.Instance.HasLocation == true))
+            if (Input.GetMouseButtonUp(0) == true)
             {
-                MoveTowards(MoveCursor.Instance.transform.position);
+                if (CanMove == true)
+                {
+                    MoveTowards(MoveCursor.Instance.transform.position);
+                }
+                else
+                {
+                    // FIXME: notify player can't move
+                }
             }
         }
-#endif
-        #endregion
+#endregion
 
-        #region Helper Methods
+#region Helper Methods
 #if SERVER
         IEnumerator QueryRemoteSettings()
         {
@@ -152,6 +169,6 @@ namespace LudumDare39
             Body.drag = Drag;
         }
 #endif
-        #endregion
+#endregion
     }
 }

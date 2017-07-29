@@ -7,8 +7,6 @@ namespace LudumDare39
     public class GoalTrigger : MonoBehaviour
     {
         [SerializeField]
-        MovePlayer player;
-        [SerializeField]
         float delayResetbySeconds = 0.5f;
 
         float timeTriggered = -1f;
@@ -40,11 +38,14 @@ namespace LudumDare39
             timeTriggered = Time.time;
 
 #if SERVER
-            // Wait for a bit
-            yield return WaitBeforeReset;
+            if (MovePlayer.Instance)
+            {
+                // Wait for a bit
+                yield return WaitBeforeReset;
 
-            // reset player position
-            player.Reset();
+                // reset player position
+                MovePlayer.Instance.Reset();
+            }
 
             // Wait for a frame
             yield return null;

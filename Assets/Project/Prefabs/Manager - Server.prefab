@@ -21,13 +21,15 @@ GameObject:
   - component: {fileID: 4617189902373952}
   - component: {fileID: 33565525276714350}
   - component: {fileID: 23186874823358560}
+  - component: {fileID: 114768288936370754}
+  - component: {fileID: 114015378166899030}
   m_Layer: 0
   m_Name: golf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1460075200600998
 GameObject:
   m_ObjectHideFlags: 0
@@ -38,7 +40,6 @@ GameObject:
   - component: {fileID: 4240339657515708}
   - component: {fileID: 114910191955718680}
   - component: {fileID: 114227728948582532}
-  - component: {fileID: 114988349336450782}
   m_Layer: 0
   m_Name: Manager - Server
   m_TagString: Untagged
@@ -79,7 +80,7 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1400917390834158}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_MotionVectors: 1
@@ -112,6 +113,20 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1400917390834158}
   m_Mesh: {fileID: 4300002, guid: 880e44eaf8dc2c6418d544e369be4475, type: 3}
+--- !u!114 &114015378166899030
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1400917390834158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2019a904570e6774c8d86b261860f126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delaySpawning: 1
+  golfBall: {fileID: 114085850153954186, guid: e2302ee675caf304390a68b6b82396ed, type: 2}
+  spawnLocation: {fileID: 4617189902373952}
 --- !u!114 &114227728948582532
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -127,6 +142,38 @@ MonoBehaviour:
   showGUI: 1
   offsetX: 0
   offsetY: 0
+--- !u!114 &114768288936370754
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1400917390834158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 112
+    i1: 47
+    i2: 252
+    i3: 196
+    i4: 250
+    i5: 221
+    i6: 246
+    i7: 132
+    i8: 122
+    i9: 213
+    i10: 6
+    i11: 230
+    i12: 156
+    i13: 165
+    i14: 60
+    i15: 240
+  m_ServerOnly: 1
+  m_LocalPlayerAuthority: 0
 --- !u!114 &114910191955718680
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -209,17 +256,3 @@ MonoBehaviour:
   matchSize: 4
   isNetworkActive: 0
   matchMaker: {fileID: 0}
---- !u!114 &114988349336450782
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1460075200600998}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2019a904570e6774c8d86b261860f126, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  delaySpawning: 1
-  golfBall: {fileID: 114085850153954186, guid: e2302ee675caf304390a68b6b82396ed, type: 2}
-  spawnLocation: {fileID: 4617189902373952}
