@@ -14,9 +14,8 @@ namespace LudumDare39
         public const string KeyboardControlsField = "KeyboardZoomMultiplier";
         public const string ScrollWheelField = "ScrollWheelZoomMultiplier";
 
-        [SerializeField]
-        [UnityEngine.Serialization.FormerlySerializedAs("target")]
-        Transform defaultTarget;
+        static MoveCamera instance = null;
+
         [SerializeField]
         float slerpMultiplier = 5f;
 
@@ -38,8 +37,17 @@ namespace LudumDare39
         Transform target;
         float playerMultiplier = DefaultPlayerZoomMultiplier;
         float overrideMultiplier = DefaultOverrideZoomMultiplier;
+        bool isSetup = false;
 
         #region Properties
+        public static MoveCamera Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+
         public Transform Target
         {
             get
@@ -75,7 +83,14 @@ namespace LudumDare39
         {
             get
             {
-                return Target.position + defaultOffset * Multiplier;
+                if(Target)
+                {
+                    return Target.position + defaultOffset * Multiplier;
+                }
+                else
+                {
+                    return transform.position;
+                }
             }
         }
 
@@ -106,7 +121,10 @@ namespace LudumDare39
 
         public void FocusOnPlayer()
         {
-            Target = defaultTarget;
+            if(MovePlayer.Instance)
+            {
+                Target = MovePlayer.Instance.transform;
+            }
         }
 
         public void ResetZoomLevel()
@@ -118,16 +136,33 @@ namespace LudumDare39
         #region Unity Events
         private void Start()
         {
-            FocusOnPlayer();
-            ResetZoomLevel();
+            // Setup instance
+            instance = this;
         }
 
-#if !SERVER
+#if !SERVER || UNITY_EDITOR
         private void Update()
+        {
+            if ((MovePlayer.Instance) && (isSetup == false))
+            {
+                FocusOnPlayer();
+                isSetup = true;
+            }
+            AdjustZoomMultiplier();
+        }
+
+        void FixedUpdate()
+        {
+            transform.position = Vector3.Slerp(transform.position, TargetPosition, Time.deltaTime * slerpMultiplier);
+        }
+#endif
+        #endregion
+
+        private void AdjustZoomMultiplier()
         {
             // Resolve how much to adjust the multiplier value
             float magnitude = CrossPlatformInputManager.GetAxis("Vertical");
-            if(Mathf.Approximately(magnitude, 0) == false)
+            if (Mathf.Approximately(magnitude, 0) == false)
             {
                 magnitude *= RemoteSettings.GetFloat(KeyboardControlsField, keyboardZoomMultiplier);
             }
@@ -138,7 +173,7 @@ namespace LudumDare39
             }
 
             // Check if we want to reverse direction
-            if(reverseZoomDirection == true)
+            if (reverseZoomDirection == true)
             {
                 magnitude *= -1;
             }
@@ -146,13 +181,6 @@ namespace LudumDare39
             // Adjust the multiplier by the magnitude, albeit clamped by offsetMultiplierRange
             playerMultiplier = Mathf.Clamp((playerMultiplier + magnitude), MinZoomMultiplier, MaxZoomMultiplier);
         }
-
-        void FixedUpdate()
-        {
-            transform.position = Vector3.Slerp(transform.position, TargetPosition, Time.deltaTime * slerpMultiplier);
-        }
-#endif
-        #endregion
 
 #if UNITY_EDITOR
         [ContextMenu("Set Offset")]

@@ -1,7 +1,7 @@
 ﻿using System;
 using OmiyaGames.Settings;
 
-namespace LudumDare38
+namespace LudumDare39
 {
     /// <summary>
     /// Adds high score settings to <see cref="GameSettings"/>.

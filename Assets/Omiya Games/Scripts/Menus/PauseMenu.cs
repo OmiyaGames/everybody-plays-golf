@@ -79,5 +79,16 @@ namespace OmiyaGames.Menu
             // Indicate button is clicked
             Manager.ButtonClick.Play();
         }
+
+        public void OnCreditsClicked()
+        {
+            Hide();
+
+            // Transition to the menu
+            Singleton.Get<SceneTransitionManager>().LoadCredits();
+
+            // Indicate button is clicked
+            Manager.ButtonClick.Play();
+        }
     }
 }

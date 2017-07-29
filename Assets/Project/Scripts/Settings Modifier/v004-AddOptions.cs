@@ -1,6 +1,6 @@
 ﻿using OmiyaGames.Settings;
 
-namespace LudumDare38
+namespace LudumDare39
 {
     /// <summary>
     /// Adds Options settings to <see cref="GameSettings"/>.
