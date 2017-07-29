@@ -834,8 +834,8 @@ MonoBehaviour:
     cursorModeWeb: 0
     revertTimeScale: 1
   mainMenu:
-    scenePath: Assets/Project/Scenes/Menus/Main Menu.unity
-    displayName: Main Menu
+    scenePath: Assets/Project/Scenes/Client.unity
+    displayName: Game
     cursorMode: 0
     cursorModeWeb: 0
     revertTimeScale: 1
@@ -846,8 +846,8 @@ MonoBehaviour:
     cursorModeWeb: 0
     revertTimeScale: 1
   levels:
-  - scenePath: Assets/Project/Scenes/DebugScene.unity
-    displayName: Debug
+  - scenePath: Assets/Project/Scenes/Client.unity
+    displayName: Game
     cursorMode: 0
     cursorModeWeb: 0
     revertTimeScale: 1
