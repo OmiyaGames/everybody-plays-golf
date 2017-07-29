@@ -190,6 +190,8 @@ GameObject:
   - component: {fileID: 135190641403247702}
   - component: {fileID: 54561615097833912}
   - component: {fileID: 114873106809671068}
+  - component: {fileID: 114360207971892258}
+  - component: {fileID: 114358664152802676}
   m_Layer: 0
   m_Name: Golf Ball
   m_TagString: Player
@@ -609,6 +611,59 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1566915467263044}
   m_Enabled: 1
+--- !u!114 &114358664152802676
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1959783378271600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 3
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_VelocityThreshold: 0.0001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
+--- !u!114 &114360207971892258
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1959783378271600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 247
+    i1: 158
+    i2: 29
+    i3: 78
+    i4: 3
+    i5: 217
+    i6: 161
+    i7: 84
+    i8: 25
+    i9: 194
+    i10: 185
+    i11: 105
+    i12: 127
+    i13: 233
+    i14: 222
+    i15: 95
+  m_ServerOnly: 1
+  m_LocalPlayerAuthority: 0
 --- !u!114 &114628587462906408
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -652,8 +707,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxImpulse: 2
+  defaultDrag: 1
   startingPosition: {x: 25.1, y: 1.454, z: -33.4}
   cursor: {fileID: 114991538840639350}
+  checkForDragEverySeconds: 5
 --- !u!114 &114991538840639350
 MonoBehaviour:
   m_ObjectHideFlags: 1

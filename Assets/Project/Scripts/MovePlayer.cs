@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 namespace LudumDare39
 {
@@ -16,8 +17,11 @@ namespace LudumDare39
         Vector3 startingPosition;
         [SerializeField]
         MoveCursor cursor;
+        [SerializeField]
+        float checkForDragEverySeconds = 5f;
 
         Rigidbody body = null;
+        WaitForSeconds waitEvery = null;
 
         #region Properties
         Rigidbody Body
@@ -47,6 +51,18 @@ namespace LudumDare39
                 return RemoteSettings.GetFloat(DragField, defaultDrag);
             }
         }
+
+        public WaitForSeconds WaitEvery
+        {
+            get
+            {
+                if(waitEvery == null)
+                {
+                    waitEvery = new WaitForSeconds(checkForDragEverySeconds);
+                }
+                return waitEvery;
+            }
+        }
         #endregion
 
         public void Reset()
@@ -64,15 +80,20 @@ namespace LudumDare39
 
         public void Move(Vector3 direction)
         {
+            direction.y = 0;
             direction.Normalize();
             direction *= MaxImpulse;
             Body.AddForce(direction, ForceMode.VelocityChange);
         }
 
         #region Unity Events
-        private void FixedUpdate()
+        private void Start()
         {
-            Body.drag = Drag;
+            Reset();
+#if SERVER
+            RemoteSettings.Updated += RemoteSettings_Updated;
+            StartCoroutine(QueryRemoteSettings());
+#endif
         }
 
 #if !SERVER
@@ -82,6 +103,24 @@ namespace LudumDare39
             {
                 MoveTowards(cursor.transform.position);
             }
+        }
+#endif
+        #endregion
+
+        #region Helper Methods
+#if SERVER
+        IEnumerator QueryRemoteSettings()
+        {
+            while(gameObject.activeInHierarchy == true)
+            {
+                yield return WaitEvery;
+                RemoteSettings.ForceUpdate();
+            }
+        }
+
+        private void RemoteSettings_Updated()
+        {
+            Body.drag = Drag;
         }
 #endif
         #endregion
