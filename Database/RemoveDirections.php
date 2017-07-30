@@ -10,9 +10,10 @@
 
         $real_hash = md5($ids . $secretKey);
         if($real_hash == $hash) {
-            // Send variables for the MySQL database class. 
-            $query = "DELETE from directions WHERE id IN ($id);"; 
-            $result = mysql_query($query) or die('Query failed: ' . mysql_error()); 
+            // Send IDs to mark which ones are already read. 
+            $query = "UPDATE `directions` SET `read` = '1' WHERE id IN ($id);"; 
+            $result = mysql_query($query) or die('Query failed: ' . mysql_error());
+			echo $id;
         } else {
 			die('hash did not match'); 
 		}
