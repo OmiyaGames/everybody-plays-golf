@@ -18,7 +18,6 @@ namespace LudumDare39
 
         MovePlayer player = null;
         WaitForSeconds waitForSync = null;
-        double lastNetworkTime = 0;
 
         #region Properties
         public static SyncPlayer Instance
@@ -84,7 +83,6 @@ namespace LudumDare39
 
         void Start()
         {
-            lastNetworkTime = Network.time;
             instance = this;
 #if SERVER
             StartCoroutine(QueryDatabase());
@@ -92,15 +90,17 @@ namespace LudumDare39
         }
 
 #if SERVER
-        const char Divider = ',';
+        const char Divider = '|';
         const int IdIndex = 0;
         const int TimeIndex = IdIndex + 1;
         const int XIndex = TimeIndex + 1;
         const int ZIndex = XIndex + 1;
+        const int NameIndex = ZIndex + 1;
 
         static readonly char[] Newline = new char[] { '\n' };
 
         readonly List<ServerManager.Direction> queuedDirections = new List<ServerManager.Direction>();
+        readonly HashSet<int> readIds = new HashSet<int>();
 
         void Update()
         {
@@ -108,9 +108,18 @@ namespace LudumDare39
             {
                 foreach(ServerManager.Direction direction in queuedDirections)
                 {
-                    Player.Move(direction.direction);
+                    if(readIds.Contains(direction.id) == false)
+                    {
+                        Player.Move(direction.direction);
+                        readIds.Add(direction.id);
+                    }
                 }
+
                 queuedDirections.Clear();
+                if((readIds.Count > 0) && (ServerManager.Instance))
+                {
+                    StartCoroutine(ServerManager.Instance.RemoveDirections(readIds, RemoveIds));
+                }
             }
         }
 
@@ -125,7 +134,8 @@ namespace LudumDare39
                 {
                     lastSynced = Time.time;
 
-                    yield return ServerManager.Instance.GetDirections(lastNetworkTime, ParseDirections);
+                    yield return ServerManager.Instance.GetDirections(ParseDirections);
+                    yield return ServerManager.Instance.GetDirections(ParseDirections);
 
                     syncTime = (Time.time - lastSynced);
                     if(syncTime < syncEverySeconds)
@@ -145,7 +155,6 @@ namespace LudumDare39
             if((status == true) && (string.IsNullOrEmpty(result) == false))
             {
                 AppendDirections(result, queuedDirections);
-                lastNetworkTime = GetNewestTime(queuedDirections, lastNetworkTime); 
             }
         }
 
@@ -161,11 +170,11 @@ namespace LudumDare39
             string[] rows = info.Split(Newline, System.StringSplitOptions.RemoveEmptyEntries);
             foreach (string row in rows)
             {
-                // Split by comma
-                cols = info.Split(Divider);
+                // Go through each line, and split by comma
+                cols = row.Split(Divider);
 
                 // Try to parse everything
-                if ((cols.Length > ZIndex) &&
+                if ((cols.Length > NameIndex) &&
                     int.TryParse(cols[IdIndex], out id) &&
                     float.TryParse(cols[TimeIndex], out time) &&
                     float.TryParse(cols[XIndex], out x) &&
@@ -174,22 +183,25 @@ namespace LudumDare39
                     // If successful, add a new direction
                     direction.x = x;
                     direction.z = z;
-                    appendTo.Add(new ServerManager.Direction(id, time, direction));
+                    appendTo.Add(new ServerManager.Direction(id, time, direction, cols[NameIndex]));
                 }
             }
         }
 
-        static double GetNewestTime(ICollection<ServerManager.Direction> appendTo, double defaultTime)
+        void RemoveIds(bool status, string result)
         {
-            double newestTime = defaultTime;
-            foreach(ServerManager.Direction direction in appendTo)
+            if((status == true) && (string.IsNullOrEmpty(result) == false))
             {
-                if(direction.networkTime > newestTime)
+                int removeId;
+                string[] ids = result.Split(',');
+                foreach(string id in ids)
                 {
-                    newestTime = direction.networkTime;
+                    if((int.TryParse(id, out removeId) == true) && (readIds.Contains(removeId) == true))
+                    {
+                        readIds.Remove(removeId);
+                    }
                 }
             }
-            return newestTime;
         }
 #endif
 
