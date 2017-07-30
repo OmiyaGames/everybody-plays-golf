@@ -106,20 +106,28 @@ namespace LudumDare39
             Body.isKinematic = false;
         }
 
-        public void MoveTowards(Vector3 position)
-        {
-            Move(position - transform.position);
-        }
-
         public void Move(Vector3 direction)
         {
-            direction.y = 0;
-            direction.Normalize();
+            Move(direction, true);
+        }
+
+        private void Move(Vector3 direction, bool doNormalize)
+        {
+            if (doNormalize == true)
+            {
+                NormalizeDirection(ref direction);
+            }
             direction *= MaxImpulse;
             Body.AddForce(direction, ForceMode.VelocityChange);
         }
 
-#region Unity Events
+        private void NormalizeDirection(ref Vector3 direction)
+        {
+            direction.y = 0;
+            direction.Normalize();
+        }
+
+        #region Unity Events
         private void Start()
         {
             // Setup instance
@@ -143,7 +151,15 @@ namespace LudumDare39
             {
                 if (CanMove == true)
                 {
-                    MoveTowards(MoveCursor.Instance.transform.position);
+                    Vector3 direction = MoveCursor.Instance.transform.position - transform.position;
+                    NormalizeDirection(ref direction);
+#if SERVER
+                    // If the server, just move the ball directly
+                    Move(direction, false);
+#else
+                    // If the client, send to the database the direction you've entered
+                    SyncedInfo.QueueDirection(direction);
+#endif
                 }
                 else
                 {

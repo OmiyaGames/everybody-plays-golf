@@ -13,9 +13,11 @@ namespace LudumDare39
 
         [SyncVar]
         Vector3 startingPosition;
+        [SerializeField]
+        float syncEverySeconds = 0.2f;
 
         MovePlayer player = null;
-        NetworkIdentity identity = null;
+        WaitForSeconds waitForSync = null;
 
         #region Properties
         public static SyncPlayer Instance
@@ -50,22 +52,169 @@ namespace LudumDare39
             }
         }
 
-        public NetworkIdentity Identity
+        public WaitForSeconds WaitForSync
         {
             get
             {
-                if(identity == null)
+                if(waitForSync == null)
                 {
-                    identity = GetComponent<NetworkIdentity>();
+                    waitForSync = new WaitForSeconds(syncEverySeconds);
                 }
-                return identity;
+                return waitForSync;
             }
         }
         #endregion
 
+        public void QueueDirectionTowards(Vector3 position)
+        {
+            QueueDirection(position - transform.position);
+        }
+
+        public void QueueDirection(Vector3 direction)
+        {
+            direction.y = 0;
+            direction.Normalize();
+
+            if(ServerManager.Instance)
+            {
+                ServerManager.Instance.QueueDirection(direction, PrintStuff);
+            }
+        }
+
         void Start()
         {
             instance = this;
+#if SERVER
+            StartCoroutine(QueryDatabase());
+#endif
+        }
+
+#if SERVER
+        const char Divider = '|';
+        const int IdIndex = 0;
+        const int TimeIndex = IdIndex + 1;
+        const int XIndex = TimeIndex + 1;
+        const int ZIndex = XIndex + 1;
+        const int NameIndex = ZIndex + 1;
+
+        static readonly char[] Newline = new char[] { '\n' };
+
+        readonly List<ServerManager.Direction> queuedDirections = new List<ServerManager.Direction>();
+        readonly HashSet<int> readIds = new HashSet<int>();
+
+        void Update()
+        {
+            if(queuedDirections.Count > 0)
+            {
+                foreach(ServerManager.Direction direction in queuedDirections)
+                {
+                    if(readIds.Contains(direction.id) == false)
+                    {
+                        Player.Move(direction.direction);
+                        readIds.Add(direction.id);
+                    }
+                }
+
+                queuedDirections.Clear();
+                if((readIds.Count > 0) && (ServerManager.Instance))
+                {
+                    StartCoroutine(ServerManager.Instance.RemoveDirections(readIds, RemoveIds));
+                }
+            }
+        }
+
+        IEnumerator QueryDatabase()
+        {
+            yield return WaitForSync;
+
+            float lastSynced, syncTime;
+            while (gameObject.activeInHierarchy)
+            {
+                if (ServerManager.Instance)
+                {
+                    lastSynced = Time.time;
+
+                    yield return ServerManager.Instance.GetDirections(ParseDirections);
+                    yield return ServerManager.Instance.GetDirections(ParseDirections);
+
+                    syncTime = (Time.time - lastSynced);
+                    if(syncTime < syncEverySeconds)
+                    {
+                        yield return new WaitForSeconds(syncEverySeconds - syncTime);
+                    }
+                }
+                else
+                {
+                    yield return WaitForSync;
+                }
+            }
+        }
+
+        void ParseDirections(bool status, string result)
+        {
+            if((status == true) && (string.IsNullOrEmpty(result) == false))
+            {
+                AppendDirections(result, queuedDirections);
+            }
+        }
+
+        void AppendDirections(string info, ICollection<ServerManager.Direction> appendTo)
+        {
+            // Setup vars
+            int id;
+            float time, x, z;
+            Vector3 direction = Vector3.zero;
+            string[] cols = null;
+
+            // split by lines
+            string[] rows = info.Split(Newline, System.StringSplitOptions.RemoveEmptyEntries);
+            foreach (string row in rows)
+            {
+                // Go through each line, and split by comma
+                cols = row.Split(Divider);
+
+                // Try to parse everything
+                if ((cols.Length > NameIndex) &&
+                    int.TryParse(cols[IdIndex], out id) &&
+                    float.TryParse(cols[TimeIndex], out time) &&
+                    float.TryParse(cols[XIndex], out x) &&
+                    float.TryParse(cols[ZIndex], out z))
+                {
+                    // If successful, add a new direction
+                    direction.x = x;
+                    direction.z = z;
+                    appendTo.Add(new ServerManager.Direction(id, time, direction, cols[NameIndex]));
+                }
+            }
+        }
+
+        void RemoveIds(bool status, string result)
+        {
+            if((status == true) && (string.IsNullOrEmpty(result) == false))
+            {
+                int removeId;
+                string[] ids = result.Split(',');
+                foreach(string id in ids)
+                {
+                    if((int.TryParse(id, out removeId) == true) && (readIds.Contains(removeId) == true))
+                    {
+                        readIds.Remove(removeId);
+                    }
+                }
+            }
+        }
+#endif
+
+        void PrintStuff(bool success, string message)
+        {
+            if(success)
+            {
+                print("success: " + message);
+            }
+            else
+            {
+                print("error: " + message);
+            }
         }
     }
 }
