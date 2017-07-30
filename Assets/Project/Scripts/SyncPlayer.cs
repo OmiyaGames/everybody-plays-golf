@@ -49,19 +49,23 @@ namespace LudumDare39
                 return player;
             }
         }
+        #endregion
 
-        public NetworkIdentity Identity
+        public void QueueDirectionTowards(Vector3 position)
         {
-            get
+            QueueDirection(position - transform.position);
+        }
+
+        public void QueueDirection(Vector3 direction)
+        {
+            direction.y = 0;
+            direction.Normalize();
+
+            if(ServerManager.Instance)
             {
-                if(identity == null)
-                {
-                    identity = GetComponent<NetworkIdentity>();
-                }
-                return identity;
+                ServerManager.Instance.QueueDirection(direction, null);
             }
         }
-        #endregion
 
         void Start()
         {

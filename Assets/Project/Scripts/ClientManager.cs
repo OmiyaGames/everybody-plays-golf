@@ -8,9 +8,20 @@ namespace LudumDare39
     [RequireComponent(typeof(NetworkManager))]
     public class ClientManager : IManager
     {
+        static ClientManager instance;
         float time;
+
+        public static ClientManager Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+
         void Start()
         {
+            instance = this;
             time = Time.time;
             Manager.StartHost();
         }
