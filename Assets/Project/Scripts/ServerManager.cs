@@ -11,10 +11,6 @@ namespace LudumDare39
         float reconnectAfter = 3f;
         [SerializeField]
         SpawnPlayer spawnScript;
-        [SerializeField]
-        string addScoreFileName = "AddDirection.php";
-        [SerializeField]
-        string getScoreFileName = "GetDirections.php";
 
         static ServerManager instance;
         float lastAttemptAtConnecting = 0f;
@@ -25,11 +21,6 @@ namespace LudumDare39
             {
                 return instance;
             }
-        }
-
-        public void QueueDirection(Vector3 direction, System.Action<bool, string> onResult)
-        {
-            PostDirection(addScoreFileName, direction, onResult);
         }
 
         void Start()
