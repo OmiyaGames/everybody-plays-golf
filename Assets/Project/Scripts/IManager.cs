@@ -12,12 +12,12 @@ namespace LudumDare39
         public const string DefaultServerIpAddress = "127.0.0.1";
         public const string PortField = "Port";
         public const string ServerIpAddressField = "ServerIpAddress";
-        const string secretKey = "0VZ;g3r0m4>Ug7a[.oi5";
+        protected const string secretKey = "0VZ;g3r0m4>Ug7a[.oi5";
 
         static readonly Dictionary<string, string> cachedUrls = new Dictionary<string, string>();
 
-        readonly System.Text.StringBuilder builder = new System.Text.StringBuilder();
-        readonly List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
+        protected readonly System.Text.StringBuilder builder = new System.Text.StringBuilder();
+        protected readonly List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
 
         NetworkManager manager = null;
 
@@ -27,8 +27,6 @@ namespace LudumDare39
         // TODO: move these 2 field to their respective files
         [SerializeField]
         protected string addScoreFileName = "AddDirection.php";
-        [SerializeField]
-        protected string removeScoresFileName = "RemoveDirections.php";
 
         public static string ServerIpAddress
         {
@@ -160,34 +158,6 @@ namespace LudumDare39
             formData.Add(new MultipartFormDataSection("z", z));
             formData.Add(new MultipartFormDataSection("hash", hash));
             StartCoroutine(Post(addScoreFileName, formData, onResult));
-        }
-
-        public void RemoveDirections(IEnumerable<int> idsToRemove, System.Action<bool, string> onResult)
-        {
-            bool prependComma = false;
-
-            // Generate list of IDs
-            builder.Length = 0;
-            foreach(int id in idsToRemove)
-            {
-                if(prependComma == true)
-                {
-                    builder.Append(',');
-                }
-                builder.Append(id);
-                prependComma = true;
-            }
-            string allIds = builder.ToString();
-
-            // Generate MD5
-            builder.Append(secretKey);
-            string hash = Md5Sum(builder.ToString());
-
-            // Build header
-            formData.Clear();
-            formData.Add(new MultipartFormDataSection("ids", allIds));
-            formData.Add(new MultipartFormDataSection("hash", hash));
-            StartCoroutine(Post(removeScoresFileName, formData, onResult));
         }
 #endregion
 

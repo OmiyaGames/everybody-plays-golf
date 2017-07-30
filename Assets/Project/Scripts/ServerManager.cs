@@ -13,12 +13,14 @@ namespace LudumDare39
             public readonly int id;
             public readonly float networkTime;
             public readonly Vector3 direction;
+            public readonly string name;
 
-            public Direction(int id, float networkTime, Vector3 direction)
+            public Direction(int id, float networkTime, Vector3 direction, string name)
             {
                 this.id = id;
                 this.networkTime = networkTime;
                 this.direction = direction;
+                this.name = name;
             }
         }
 
@@ -30,9 +32,10 @@ namespace LudumDare39
         SpawnPlayer spawnScript;
         [SerializeField]
         string getScoresFileName = "GetDirections.php";
+        [SerializeField]
+        string removeScoresFileName = "RemoveDirections.php";
 
         float lastAttemptAtConnecting = 0f;
-        readonly Dictionary<string, string> cachedArgs = new Dictionary<string, string>();
 
         public static ServerManager Instance
         {
@@ -42,6 +45,7 @@ namespace LudumDare39
             }
         }
 
+#if SERVER
         void Start()
         {
             instance = this;
@@ -71,17 +75,38 @@ namespace LudumDare39
             lastAttemptAtConnecting = Time.time;
         }
 
-        public IEnumerator GetDirections(double networkTime, System.Action<bool, string> onResult)
+        public IEnumerator GetDirections(System.Action<bool, string> onResult)
         {
-            if (cachedArgs.ContainsKey("time") == true)
-            {
-                cachedArgs["time"] = networkTime.ToString();
-            }
-            else
-            {
-                cachedArgs.Add("time", networkTime.ToString());
-            }
-            yield return StartCoroutine(Get(getScoresFileName, cachedArgs, onResult));
+            yield return StartCoroutine(Get(getScoresFileName, onResult));
         }
+
+        public IEnumerator RemoveDirections(IEnumerable<int> idsToRemove, System.Action<bool, string> onResult)
+        {
+            bool prependComma = false;
+
+            // Generate list of IDs
+            builder.Length = 0;
+            foreach (int id in idsToRemove)
+            {
+                if (prependComma == true)
+                {
+                    builder.Append(',');
+                }
+                builder.Append(id);
+                prependComma = true;
+            }
+            string allIds = builder.ToString();
+
+            // Generate MD5
+            builder.Append(secretKey);
+            string hash = Md5Sum(builder.ToString());
+
+            // Build header
+            formData.Clear();
+            formData.Add(new MultipartFormDataSection("ids", allIds));
+            formData.Add(new MultipartFormDataSection("hash", hash));
+            yield return StartCoroutine(Post(removeScoresFileName, formData, onResult));
+        }
+#endif
     }
 }
