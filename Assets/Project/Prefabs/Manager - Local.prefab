@@ -292,6 +292,7 @@ GameObject:
   - component: {fileID: 223059295787709204}
   - component: {fileID: 114217317930863068}
   - component: {fileID: 114602241608381380}
+  - component: {fileID: 114529159665523362}
   m_Layer: 5
   m_Name: Perspective Canvas
   m_TagString: Untagged
@@ -1287,8 +1288,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: Reconnect
+      - m_Target: {fileID: 114066142894308840}
+        m_MethodName: OnButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3746,6 +3747,18 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114529159665523362
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1339477340065140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aea6dded57db41b4095504b83b971eef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startMenu: {fileID: 114066142894308840}
 --- !u!114 &114534420966012398
 MonoBehaviour:
   m_ObjectHideFlags: 1
