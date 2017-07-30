@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4144780063095634}
   - component: {fileID: 114929818310759594}
   - component: {fileID: 114717289154993626}
+  - component: {fileID: 114037869312545012}
   m_Layer: 0
   m_Name: Manager - Client
   m_TagString: Untagged
@@ -41,6 +42,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114037869312545012
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1102594775515580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 227461547, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 0}
+  showGUI: 1
+  offsetX: 0
+  offsetY: 0
 --- !u!114 &114717289154993626
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -52,6 +68,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c379bc8ff44efbc4b96f6f651abf3b7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseUrl: http://omiyagames.com/epg_ld39/
+  addScoreFileName: AddDirection.php
 --- !u!114 &114929818310759594
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -76,10 +94,10 @@ MonoBehaviour:
   m_AutoCreatePlayer: 0
   m_PlayerSpawnMethod: 0
   m_OfflineScene: 
-  m_OnlineScene: 
+  m_OnlineScene: Client
   m_SpawnPrefabs:
   - {fileID: 1018169362913680, guid: e2302ee675caf304390a68b6b82396ed, type: 2}
-  m_CustomConfig: 1
+  m_CustomConfig: 0
   m_MaxConnections: 120
   m_ConnectionConfig:
     m_PacketSize: 1440
