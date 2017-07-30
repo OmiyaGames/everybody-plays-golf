@@ -1,4 +1,6 @@
-﻿using OmiyaGames.Settings;
+﻿using System;
+using UnityEngine;
+using OmiyaGames.Settings;
 
 namespace LudumDare39
 {
@@ -11,6 +13,14 @@ namespace LudumDare39
         public const int DefaultMaxEnergy = 7;
         public const int DefaultGameId = -1;
         public const string MaxEnergyField = "MaxEnergy";
+
+        class ClampEnergy : PropertyStoredSettingsGenerator<int>.ValueProcessor
+        {
+            public int Process(int value)
+            {
+                return Mathf.Clamp(value, 0, MaxEnergy);
+            }
+        }
 
         public override ushort Version
         {
@@ -49,7 +59,8 @@ namespace LudumDare39
                     {
                         "Current energy on the dreaded energy meter."
                     },
-                    Converter = GetEnergy
+                    Converter = GetEnergy,
+                    Processor = new ClampEnergy()
                 },
                 new StoredIntGenerator("Last Max Energy", DefaultMaxEnergy)
                 {
