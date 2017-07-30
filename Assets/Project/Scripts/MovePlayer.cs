@@ -143,6 +143,7 @@ namespace LudumDare39
             {
                 if (CanMove == true)
                 {
+                    SyncedInfo.QueueDirection(MoveCursor.Instance.transform.position);
                     MoveTowards(MoveCursor.Instance.transform.position);
                 }
                 else

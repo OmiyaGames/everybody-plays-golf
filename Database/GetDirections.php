@@ -11,6 +11,6 @@
     for($i = 0; $i < $num_results; $i++)
     {
          $row = mysql_fetch_array($result);
-         echo $row['time'] . "," . $row['x'] . "," . $row['z'] . "\n";
+         echo $row['id'] . "," . $row['time'] . "," . $row['x'] . "," . $row['z'] . "\n";
     }
 ?>

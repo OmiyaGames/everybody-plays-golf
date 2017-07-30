@@ -6,7 +6,7 @@
         $time = mysql_real_escape_string($_POST['time'], $db); 
         $x = mysql_real_escape_string($_POST['x'], $db);
         $z = mysql_real_escape_string($_POST['z'], $db);
-        $hash = $_POST['hash']; 
+        $hash = $_POST['hash'];
  
         $secretKey="mySecretKey"; # Change this value to match the value stored in the client javascript below 
 
