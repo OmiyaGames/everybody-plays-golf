@@ -138,6 +138,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c44cc0b110bc4242a8844c89e367c56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  reconnectAfter: 3
+  spawnScript: {fileID: 114015378166899030}
 --- !u!114 &114768288936370754
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -194,7 +196,7 @@ MonoBehaviour:
   m_AutoCreatePlayer: 0
   m_PlayerSpawnMethod: 0
   m_OfflineScene: 
-  m_OnlineScene: Server
+  m_OnlineScene: 
   m_SpawnPrefabs:
   - {fileID: 1018169362913680, guid: e2302ee675caf304390a68b6b82396ed, type: 2}
   m_CustomConfig: 0

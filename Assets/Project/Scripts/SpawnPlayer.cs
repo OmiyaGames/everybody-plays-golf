@@ -13,22 +13,50 @@ namespace LudumDare39
         [SerializeField]
         Transform spawnLocation;
 
-        bool isSpawned = false;
 
-        private void Update()
+        GameObject spawnedInstance = null;
+
+        public bool IsSpawned
         {
-            if ((isSpawned == false) && (SyncPlayer.Instance == null) && (NetworkServer.active == true))
+            get
             {
-                CmdSpawn();
-                isSpawned = true;
+                return spawnedInstance != null;
             }
         }
 
-        private void CmdSpawn()
+        public void CmdSpawn(bool alwasySpawnNewInstance)
         {
-            GameObject clone = Instantiate(golfBall.gameObject, spawnLocation.position, Quaternion.identity);
-            clone.GetComponent<SyncPlayer>().StartingPosition = spawnLocation.position;
-            NetworkServer.Spawn(clone);
+            if (NetworkServer.active == true)
+            {
+                // Check if there's an instance already
+                if(spawnedInstance)
+                {
+                    if (alwasySpawnNewInstance == true)
+                    {
+                        // Despawn this instance
+                        CmdDeSpawn();
+                    }
+                    else
+                    {
+                        // Don't spawn anything
+                        return;
+                    }
+                }
+                
+                // Spawn a new instance
+                spawnedInstance = Instantiate(golfBall.gameObject, spawnLocation.position, Quaternion.identity);
+                spawnedInstance.GetComponent<SyncPlayer>().StartingPosition = spawnLocation.position;
+                NetworkServer.Spawn(spawnedInstance);
+            }
+        }
+
+        public void CmdDeSpawn()
+        {
+            if(spawnedInstance)
+            {
+                NetworkServer.Destroy(spawnedInstance);
+                spawnedInstance = null;
+            }
         }
     }
 }
