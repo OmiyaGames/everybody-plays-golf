@@ -35,8 +35,6 @@ namespace LudumDare39
         [SerializeField]
         string removeScoresFileName = "RemoveDirections.php";
 
-        float lastAttemptAtConnecting = 0f;
-
         public static ServerManager Instance
         {
             get
@@ -46,21 +44,33 @@ namespace LudumDare39
         }
 
 #if SERVER
+        float lastAttemptAtConnecting;
+        bool isReady = false;
+
         void Start()
         {
             instance = this;
+            RemoteSettings.Updated += RemoteSettings_Updated;
+        }
+
+        private void RemoteSettings_Updated()
+        {
+            isReady = true;
             Reconnect();
         }
 
         private void Update()
         {
-            if((NetworkServer.active == false) && ((Time.time - lastAttemptAtConnecting) > reconnectAfter))
+            if(isReady == true)
             {
-                Reconnect();
-            }
-            else if((NetworkServer.active == true) && (spawnScript.IsSpawned == false))
-            {
-                spawnScript.CmdSpawn(false);
+                if((NetworkServer.active == false) && ((Time.time - lastAttemptAtConnecting) > reconnectAfter))
+                {
+                    Reconnect();
+                }
+                else if((NetworkServer.active == true) && (spawnScript.IsSpawned == false))
+                {
+                    spawnScript.CmdSpawn(false);
+                }
             }
         }
 
