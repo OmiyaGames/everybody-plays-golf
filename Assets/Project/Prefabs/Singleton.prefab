@@ -845,12 +845,7 @@ MonoBehaviour:
     cursorMode: 0
     cursorModeWeb: 0
     revertTimeScale: 1
-  levels:
-  - scenePath: Assets/Project/Scenes/Client.unity
-    displayName: Game
-    cursorMode: 0
-    cursorModeWeb: 0
-    revertTimeScale: 1
+  levels: []
   defaultLockMode: 1
 --- !u!114 &11428920
 MonoBehaviour:
