@@ -1,59 +1,26 @@
 fileFormatVersion: 2
-guid: a99efd7e55668ab4882addbc4cc1b7d8
-timeCreated: 1501338941
+guid: 2b2384648a524174c9eb383e51ae6dc0
+timeCreated: 1501371804
 licenseType: Free
 ModelImporter:
   serializedVersion: 21
   fileIDToRecycleName:
-    100000: //RootNode
-    100002: Cube
-    100004: Cylinder
-    100006: Plane
-    100008: Ceiling
-    100010: Course
-    100012: Cursor
-    100014: Hole
-    100016: Plane_Center
-    100018: Flag
-    100020: Flag_Pole
-    400000: //RootNode
-    400002: Cube
-    400004: Cylinder
-    400006: Plane
-    400008: Ceiling
-    400010: Course
-    400012: Cursor
-    400014: Hole
-    400016: Plane_Center
-    400018: Flag
-    400020: Flag_Pole
-    2300000: Cube
-    2300002: Cylinder
-    2300004: Plane
-    2300006: Ceiling
-    2300008: Course
-    2300010: Cursor
-    2300012: Hole
-    2300014: Flag
-    2300016: Flag_Pole
-    3300000: Cube
-    3300002: Cylinder
-    3300004: Plane
-    3300006: Ceiling
-    3300008: Course
-    3300010: Cursor
-    3300012: Hole
-    3300014: Flag
-    3300016: Flag_Pole
-    4300000: Cylinder
-    4300002: Cube
-    4300004: Plane
-    4300006: Ceiling
-    4300008: Cursor
-    4300010: Hole
-    4300012: Course
-    4300014: Flag
-    4300016: Flag_Pole
+    100000: Anchor_Bottom
+    100002: Anchor_Top
+    100004: Flag
+    100006: Flag_Pole
+    100008: //RootNode
+    400000: Anchor_Bottom
+    400002: Anchor_Top
+    400004: Flag
+    400006: Flag_Pole
+    400008: //RootNode
+    2300000: Flag
+    2300002: Flag_Pole
+    3300000: Flag
+    3300002: Flag_Pole
+    4300000: Flag_Pole
+    4300002: Flag
     7400000: Default Take
     9500000: //RootNode
   materials:
