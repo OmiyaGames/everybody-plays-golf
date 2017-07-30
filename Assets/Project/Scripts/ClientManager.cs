@@ -49,12 +49,13 @@ namespace LudumDare39
             lastAttemptAtConnecting = Time.time;
         }
 
-        public void QueueDirection(Vector3 direction, string name, System.Action<bool, string> onResult)
+        public void QueueDirection(Vector3 direction, string name, float netTime, System.Action<bool, string> onResult)
         {
             // Get string versions of most args
             string x = direction.x.ToString();
             string z = direction.z.ToString();
-            string time = Network.time.ToString();
+            string time = netTime.ToString();
+            Debug.Log(netTime);
 
             // Generate MD5
             builder.Length = 0;
