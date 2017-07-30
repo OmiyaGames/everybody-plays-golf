@@ -15,6 +15,7 @@
             // Send variables for the MySQL database class. 
             $query = "insert into directions values (NULL, '$time', '$x', '$z', '$name', '0');"; 
             $result = mysql_query($query) or die('Query failed: ' . mysql_error());
+			echo "Retrieved...\ntime: $time\nx: $x\nz: $z\nname: $name";
         } else {
 			die('hash did not match'); 
 		}
