@@ -7,41 +7,54 @@ namespace LudumDare39
     public class SpawnPlayer : NetworkBehaviour
     {
         [SerializeField]
-        float delaySpawning = 1f;
-        [SerializeField]
         SyncPlayer golfBall;
         [SerializeField]
         Transform spawnLocation;
 
-        // Use this for initialization
-        IEnumerator Start()
+
+        GameObject spawnedInstance = null;
+
+        public bool IsSpawned
         {
-            yield return new WaitForSeconds(delaySpawning);
-            while(SyncPlayer.Instance == null)
+            get
             {
-                yield return null;
-                if (NetworkServer.active == true)
+                return spawnedInstance != null;
+            }
+        }
+
+        public void CmdSpawn(bool alwasySpawnNewInstance)
+        {
+            if (NetworkServer.active == true)
+            {
+                // Check if there's an instance already
+                if(spawnedInstance)
                 {
-                    CmdSpawn();
-                    break;
+                    if (alwasySpawnNewInstance == true)
+                    {
+                        // Despawn this instance
+                        CmdDeSpawn();
+                    }
+                    else
+                    {
+                        // Don't spawn anything
+                        return;
+                    }
                 }
+                
+                // Spawn a new instance
+                spawnedInstance = Instantiate(golfBall.gameObject, spawnLocation.position, Quaternion.identity);
+                spawnedInstance.GetComponent<SyncPlayer>().StartingPosition = spawnLocation.position;
+                NetworkServer.Spawn(spawnedInstance);
             }
         }
 
-        private void Update()
+        public void CmdDeSpawn()
         {
-            if ((NetworkServer.active == true) && (Input.GetKeyUp(KeyCode.Space) == true))
+            if(spawnedInstance)
             {
-                CmdSpawn();
+                NetworkServer.Destroy(spawnedInstance);
+                spawnedInstance = null;
             }
-        }
-
-        //[Command]
-        private void CmdSpawn()
-        {
-            GameObject clone = Instantiate(golfBall.gameObject, spawnLocation.position, Quaternion.identity);
-            clone.GetComponent<SyncPlayer>().StartingPosition = spawnLocation.position;
-            NetworkServer.Spawn(clone);
         }
     }
 }

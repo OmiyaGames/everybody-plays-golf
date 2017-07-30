@@ -39,7 +39,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4240339657515708}
   - component: {fileID: 114910191955718680}
-  - component: {fileID: 114227728948582532}
+  - component: {fileID: 114314616784717908}
   m_Layer: 0
   m_Name: Manager - Server
   m_TagString: Untagged
@@ -124,10 +124,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2019a904570e6774c8d86b261860f126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delaySpawning: 1
   golfBall: {fileID: 114085850153954186, guid: e2302ee675caf304390a68b6b82396ed, type: 2}
   spawnLocation: {fileID: 4617189902373952}
---- !u!114 &114227728948582532
+--- !u!114 &114314616784717908
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -135,13 +134,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1460075200600998}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 227461547, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 3c44cc0b110bc4242a8844c89e367c56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manager: {fileID: 0}
-  showGUI: 1
-  offsetX: 0
-  offsetY: 0
+  reconnectAfter: 3
+  spawnScript: {fileID: 114015378166899030}
 --- !u!114 &114768288936370754
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -198,11 +195,11 @@ MonoBehaviour:
   m_AutoCreatePlayer: 0
   m_PlayerSpawnMethod: 0
   m_OfflineScene: 
-  m_OnlineScene: Server
+  m_OnlineScene: 
   m_SpawnPrefabs:
   - {fileID: 1018169362913680, guid: e2302ee675caf304390a68b6b82396ed, type: 2}
-  m_CustomConfig: 0
-  m_MaxConnections: 4
+  m_CustomConfig: 1
+  m_MaxConnections: 120
   m_ConnectionConfig:
     m_PacketSize: 1440
     m_FragmentSize: 500
@@ -243,7 +240,7 @@ MonoBehaviour:
     m_MaxTimerTimeout: 12000
     m_MinNetSimulatorTimeout: 1
     m_MaxNetSimulatorTimeout: 12000
-  m_Channels: 
+  m_Channels: 0500000000000000
   m_UseWebSockets: 0
   m_UseSimulator: 0
   m_SimulatedLatency: 1
