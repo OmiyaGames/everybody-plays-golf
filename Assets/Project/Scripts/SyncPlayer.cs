@@ -35,6 +35,14 @@ namespace LudumDare39
             }
         }
 
+        public static GameSettings Settings
+        {
+            get
+            {
+                return Singleton.Get<GameSettings>();
+            }
+        }
+
         public Vector3 StartingPosition
         {
             get
@@ -95,6 +103,13 @@ namespace LudumDare39
             gameId = 0;
             StartCoroutine(QueryDatabase());
 #endif
+        }
+
+        public void SetupNextGame()
+        {
+            gameId += 1;
+            Settings.LastGameID = gameId;
+            Settings.CurrentEnergy = Settings.LastMaxEnergy;
         }
 
 #if SERVER

@@ -10,7 +10,7 @@ namespace LudumDare39
     {
         public void OnButtonClicked()
         {
-            Parent.CurrentState = MenuCollection.State.Playing;
+            Parent.CurrentState = MenuCollection.MenuState.Playing;
         }
     }
 }
