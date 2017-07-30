@@ -14,6 +14,20 @@ namespace LudumDare39
         public const string ServerIpAddressField = "ServerIpAddress";
         const string secretKey = "0VZ;g3r0m4>Ug7a[.oi5";
 
+        public struct Direction
+        {
+            public readonly int id;
+            public readonly float networkTime;
+            public readonly Vector3 direction;
+
+            public Direction(int id, float networkTime, Vector3 direction)
+            {
+                this.id = id;
+                this.networkTime = networkTime;
+                this.direction = direction;
+            }
+        }
+
         NetworkManager manager = null;
         static readonly Dictionary<string, string> cachedUrls = new Dictionary<string, string>();
         readonly System.Text.StringBuilder builder = new System.Text.StringBuilder();
@@ -22,11 +36,11 @@ namespace LudumDare39
         [SerializeField]
         protected string baseUrl = "http://omiyagames.com/epg_ld39/";
         [SerializeField]
-        protected string getScoreFileName = "GetDirections.php";
+        protected string getScoresFileName = "GetDirections.php";
         [SerializeField]
         protected string addScoreFileName = "AddDirection.php";
         [SerializeField]
-        protected string removeScoreFileName = "RemoveDirection.php";
+        protected string removeScoresFileName = "RemoveDirections.php";
 
         public static string ServerIpAddress
         {
@@ -69,6 +83,7 @@ namespace LudumDare39
             return fullUrl;
         }
 
+#region Gets
         public IEnumerator Get(string phpFileName, System.Action<bool, string> onResult)
         {
             WWW getWww = new WWW(GetUrl(phpFileName));
@@ -87,6 +102,53 @@ namespace LudumDare39
             }
         }
 
+        public void GetDirections(System.Action<bool, string> onResult)
+        {
+            StartCoroutine(Get(GetUrl(getScoresFileName), onResult));
+        }
+
+        static readonly char[] Newline = new char[] { '\n' };
+        const char Divider = ',';
+        const int IdIndex = 0;
+        const int TimeIndex = IdIndex + 1;
+        const int XIndex = TimeIndex + 1;
+        const int ZIndex = XIndex + 1;
+
+        public List<Direction> ConvertToDirections(string info)
+        {
+            List<Direction> directions = new List<Direction>(10);
+
+            // Setup vars
+            int id;
+            float time, x, z;
+            Vector3 direction = Vector3.zero;
+            string[] cols = null;
+
+            // split by lines
+            string[] rows = info.Split(Newline, System.StringSplitOptions.RemoveEmptyEntries);
+            foreach (string row in rows)
+            {
+                // Split by comma
+                cols = info.Split(Divider);
+
+                // Try to parse everything
+                if((cols.Length > ZIndex) &&
+                    int.TryParse(cols[IdIndex], out id) &&
+                    float.TryParse(cols[TimeIndex], out time) &&
+                    float.TryParse(cols[XIndex], out x) &&
+                    float.TryParse(cols[ZIndex], out z))
+                {
+                    // If successful, add a new direction
+                    direction.x = x;
+                    direction.z = z;
+                    directions.Add(new Direction(id, time, direction));
+                }
+            }
+            return directions;
+        }
+        #endregion
+
+        #region Posts
         public IEnumerator Post(string phpFileName, List<IMultipartFormSection> form, System.Action<bool, string> onResult)
         {
             // Post the URL to the site and create a download object to get the result.
@@ -106,7 +168,7 @@ namespace LudumDare39
             }
         }
 
-        public IEnumerator PostDirection(string phpFileName, Vector3 direction, System.Action<bool, string> onResult)
+        public void QueueDirection(Vector3 direction, System.Action<bool, string> onResult)
         {
             // Get string versions of most args
             string x = direction.x.ToString();
@@ -121,32 +183,43 @@ namespace LudumDare39
             builder.Append(secretKey);
             string hash = Md5Sum(builder.ToString());
 
-            // Build header information
-            builder.Length = 0;
-            builder.Append("time=");
-            builder.Append(time);
-            builder.Append("&x=");
-            builder.Append(x);
-            builder.Append("&z=");
-            builder.Append(z);
-            builder.Append("&hash=");
-            builder.Append(hash);
-
             // Build header
             formData.Clear();
-            print(builder.ToString());
-            //formData.Add(new MultipartFormDataSection(builder.ToString()));
             formData.Add(new MultipartFormDataSection("time", time));
             formData.Add(new MultipartFormDataSection("x", x));
             formData.Add(new MultipartFormDataSection("z", z));
             formData.Add(new MultipartFormDataSection("hash", hash));
-            yield return StartCoroutine(Post(phpFileName, formData, onResult));
+            StartCoroutine(Post(addScoreFileName, formData, onResult));
         }
 
-        public void QueueDirection(Vector3 direction, System.Action<bool, string> onResult)
+        public void RemoveDirections(IEnumerable<int> idsToRemove, System.Action<bool, string> onResult)
         {
-            StartCoroutine(PostDirection(addScoreFileName, direction, onResult));
+            bool prependComma = false;
+
+            // Generate list of IDs
+            builder.Length = 0;
+            foreach(int id in idsToRemove)
+            {
+                if(prependComma == true)
+                {
+                    builder.Append(',');
+                }
+                builder.Append(id);
+                prependComma = true;
+            }
+            string allIds = builder.ToString();
+
+            // Generate MD5
+            builder.Append(secretKey);
+            string hash = Md5Sum(builder.ToString());
+
+            // Build header
+            formData.Clear();
+            formData.Add(new MultipartFormDataSection("ids", allIds));
+            formData.Add(new MultipartFormDataSection("hash", hash));
+            StartCoroutine(Post(removeScoresFileName, formData, onResult));
         }
+#endregion
 
         /// <summary>
         /// Taken from http://wiki.unity3d.com/index.php?title=MD5
