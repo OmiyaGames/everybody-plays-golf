@@ -24,7 +24,6 @@ GameObject:
   - component: {fileID: 114589225122279176}
   - component: {fileID: 114304817772919610}
   - component: {fileID: 114716080974506930}
-  - component: {fileID: 114355171533058024}
   - component: {fileID: 114085850153954186}
   m_Layer: 0
   m_Name: Golf Ball
@@ -174,19 +173,6 @@ MonoBehaviour:
     i15: 237
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
---- !u!114 &114355171533058024
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1018169362913680}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -837897634, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_VisualizerPrefab: {fileID: 1950254899246100, guid: 8b0e9e33bd834884eaea7dec3b7d369e,
-    type: 2}
 --- !u!114 &114589225122279176
 MonoBehaviour:
   m_ObjectHideFlags: 1
