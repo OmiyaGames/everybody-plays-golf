@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<cross-domain-policy>
+<allow-access-from domain="omiyagames.com"/>
+<allow-access-from domain="*.omiyagames.com"/>
+<allow-access-from domain="taroomiya.com"/>
+<allow-access-from domain="*.taroomiya.com"/>
+<allow-access-from domain="ldjam.com"/>
+<allow-access-from domain="*.ldjam.com"/>
+<allow-access-from domain="ludumdare.com"/>
+<allow-access-from domain="*.ludumdare.com"/>
+<allow-access-from domain="itch.io"/>
+<allow-access-from domain="*.itch.io"/>
+<allow-access-from domain="gamejolt.com"/>
+<allow-access-from domain="*.gamejolt.com"/>
+<allow-access-from domain="newgrounds.com"/>
+<allow-access-from domain="*.newgrounds.com"/>
+<allow-access-from domain="kongregate.com"/>
+<allow-access-from domain="*.kongregate.com"/>
+</cross-domain-policy>
