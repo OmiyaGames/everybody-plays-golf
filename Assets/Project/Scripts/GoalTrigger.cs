@@ -8,6 +8,8 @@ namespace LudumDare39
     {
         [SerializeField]
         float delayResetbySeconds = 0.5f;
+        [SerializeField]
+        Transform falloutThreshold;
 
         float timeTriggered = -1f;
         WaitForSeconds waitBeforeReset = null;
@@ -31,6 +33,16 @@ namespace LudumDare39
                 StartCoroutine(DelayReset());
             }
         }
+
+#if SERVER
+        private void Update()
+        {
+            if((MovePlayer.Instance != null) && (MovePlayer.Instance.transform.position.y < falloutThreshold.position.y))
+            {
+                MovePlayer.Instance.Reset();
+            }
+        }
+#endif
 
         IEnumerator DelayReset()
         {

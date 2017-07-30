@@ -36,7 +36,6 @@ namespace LudumDare39
             HasLocation = false;
         }
 
-#if !SERVER || UNITY_EDITOR
         void Update()
         {
             mouseRay = raycastCamera.ScreenPointToRay(Input.mousePosition);
@@ -46,6 +45,5 @@ namespace LudumDare39
                 transform.position = mouseRay.GetPoint(distance);
             }
         }
-#endif
     }
 }
