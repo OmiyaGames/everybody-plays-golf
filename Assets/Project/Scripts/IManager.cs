@@ -127,7 +127,7 @@ namespace LudumDare39
             {
                 if (string.IsNullOrEmpty(postWww.error) == true)
                 {
-                    onResult(true, null);
+                    onResult(true, postWww.downloadHandler.text);
                 }
                 else
                 {

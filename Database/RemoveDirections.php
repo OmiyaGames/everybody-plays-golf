@@ -11,9 +11,9 @@
         $real_hash = md5($ids . $secretKey);
         if($real_hash == $hash) {
             // Send IDs to mark which ones are already read. 
-            $query = "UPDATE `directions` SET `read` = '1' WHERE id IN ($id);"; 
+            $query = "UPDATE `directions` SET `read` = 1 WHERE id IN ($ids);"; 
             $result = mysql_query($query) or die('Query failed: ' . mysql_error());
-			echo $id;
+			echo $ids;
         } else {
 			die('hash did not match'); 
 		}
