@@ -13,7 +13,9 @@
         $real_hash = md5($time . $x . $z . $secretKey); 
         if($real_hash == $hash) { 
             // Send variables for the MySQL database class. 
-            $query = "insert into directions values (NULL, '$time', '$x', '$z');"; 
-            $result = mysql_query($query) or die('Query failed: ' . mysql_error()); 
-        } 
+            $query = "insert into directions values (NULL, '$time', '$x', '$z', '$name', NULL);"; 
+            $result = mysql_query($query) or die('Query failed: ' . mysql_error());
+        } else {
+			die('hash did not match'); 
+		}
 ?>
