@@ -63,13 +63,25 @@ namespace LudumDare39
 
             if(ServerManager.Instance)
             {
-                ServerManager.Instance.QueueDirection(direction, null);
+                ServerManager.Instance.QueueDirection(direction, PrintStuff);
             }
         }
 
         void Start()
         {
             instance = this;
+        }
+
+        void PrintStuff(bool success, string message)
+        {
+            if(success)
+            {
+                print("success: " + message);
+            }
+            else
+            {
+                print("error: " + message);
+            }
         }
     }
 }

@@ -17,6 +17,7 @@ namespace LudumDare39
         NetworkManager manager = null;
         static readonly Dictionary<string, string> cachedUrls = new Dictionary<string, string>();
         readonly System.Text.StringBuilder builder = new System.Text.StringBuilder();
+        readonly List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
 
         [SerializeField]
         protected string baseUrl = "http://omiyagames.com/epg_ld39/";
@@ -86,17 +87,17 @@ namespace LudumDare39
             }
         }
 
-        public IEnumerator Post(string phpFileName, WWWForm form, System.Action<bool, string> onResult)
+        public IEnumerator Post(string phpFileName, List<IMultipartFormSection> form, System.Action<bool, string> onResult)
         {
             // Post the URL to the site and create a download object to get the result.
-            WWW postWww = new WWW(GetUrl(phpFileName), form);
-            yield return postWww; // Wait until the download is done
+            UnityWebRequest postWww = UnityWebRequest.Post(GetUrl(phpFileName), form);
+            yield return postWww.Send(); // Wait until the download is done
 
             if(onResult != null)
             {
                 if (string.IsNullOrEmpty(postWww.error) == true)
                 {
-                    onResult(true, postWww.text);
+                    onResult(true, null);
                 }
                 else
                 {
@@ -107,10 +108,12 @@ namespace LudumDare39
 
         public IEnumerator PostDirection(string phpFileName, Vector3 direction, System.Action<bool, string> onResult)
         {
+            // Get string versions of most args
             string x = direction.x.ToString();
             string z = direction.z.ToString();
             string time = Network.time.ToString();
 
+            // Generate MD5
             builder.Length = 0;
             builder.Append(time);
             builder.Append(x);
@@ -118,18 +121,31 @@ namespace LudumDare39
             builder.Append(secretKey);
             string hash = Md5Sum(builder.ToString());
 
-            WWWForm form = new WWWForm();
-            form.AddField("time", time);
-            form.AddField("x", x);
-            form.AddField("z", z);
-            form.AddField("hash", hash);
+            // Build header information
+            builder.Length = 0;
+            builder.Append("time=");
+            builder.Append(time);
+            builder.Append("&x=");
+            builder.Append(x);
+            builder.Append("&z=");
+            builder.Append(z);
+            builder.Append("&hash=");
+            builder.Append(hash);
 
-            yield return StartCoroutine(Post(phpFileName, form, onResult));
+            // Build header
+            formData.Clear();
+            print(builder.ToString());
+            //formData.Add(new MultipartFormDataSection(builder.ToString()));
+            formData.Add(new MultipartFormDataSection("time", time));
+            formData.Add(new MultipartFormDataSection("x", x));
+            formData.Add(new MultipartFormDataSection("z", z));
+            formData.Add(new MultipartFormDataSection("hash", hash));
+            yield return StartCoroutine(Post(phpFileName, formData, onResult));
         }
 
         public void QueueDirection(Vector3 direction, System.Action<bool, string> onResult)
         {
-            PostDirection(addScoreFileName, direction, onResult);
+            StartCoroutine(PostDirection(addScoreFileName, direction, onResult));
         }
 
         /// <summary>
