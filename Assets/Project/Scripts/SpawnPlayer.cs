@@ -13,30 +13,17 @@ namespace LudumDare39
         [SerializeField]
         Transform spawnLocation;
 
-        // Use this for initialization
-        IEnumerator Start()
-        {
-            yield return new WaitForSeconds(delaySpawning);
-            while(SyncPlayer.Instance == null)
-            {
-                yield return null;
-                if (NetworkServer.active == true)
-                {
-                    CmdSpawn();
-                    break;
-                }
-            }
-        }
+        bool isSpawned = false;
 
         private void Update()
         {
-            if ((NetworkServer.active == true) && (Input.GetKeyUp(KeyCode.Space) == true))
+            if ((isSpawned == false) && (SyncPlayer.Instance == null) && (NetworkServer.active == true))
             {
                 CmdSpawn();
+                isSpawned = true;
             }
         }
 
-        //[Command]
         private void CmdSpawn()
         {
             GameObject clone = Instantiate(golfBall.gameObject, spawnLocation.position, Quaternion.identity);
