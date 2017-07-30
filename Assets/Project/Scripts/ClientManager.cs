@@ -11,9 +11,11 @@ namespace LudumDare39
         static ClientManager instance;
 
         [SerializeField]
+        float reconnectAfter = 3f;
+        [SerializeField]
         string addScoreFileName = "AddDirection.php";
 
-        float time;
+        float lastAttemptAtConnecting;
 
         public static ClientManager Instance
         {
@@ -27,8 +29,24 @@ namespace LudumDare39
         void Start()
         {
             instance = this;
-            time = Time.time;
-            Manager.StartHost();
+            Reconnect();
+        }
+
+        private void Update()
+        {
+            if ((Manager.client.isConnected == false) && ((Time.time - lastAttemptAtConnecting) > reconnectAfter))
+            {
+                Reconnect();
+            }
+        }
+
+        public void Reconnect()
+        {
+            //Manager.StopClient();
+
+            //Debug.Log("Connecting to IP Address " + ServerIpAddress + " and Port " + Port);
+            //Manager.StartClient();
+            lastAttemptAtConnecting = Time.time;
         }
 
         public void QueueDirection(Vector3 direction, string name, System.Action<bool, string> onResult)
@@ -56,18 +74,6 @@ namespace LudumDare39
             formData.Add(new MultipartFormDataSection("hash", hash));
             StartCoroutine(Post(addScoreFileName, formData, onResult));
         }
-
-#if UNITY_EDITOR && RECONNECT
-        private void Update()
-        {
-            if ((Time.time - time) > 3)
-            {
-                time = Time.time;
-                Manager.StopClient();
-                Manager.StartHost();
-            }
-        }
-#endif
 #endif
     }
 }
