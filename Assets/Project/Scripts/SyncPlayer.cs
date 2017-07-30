@@ -65,22 +65,6 @@ namespace LudumDare39
         }
         #endregion
 
-        public void QueueDirectionTowards(Vector3 position)
-        {
-            QueueDirection(position - transform.position);
-        }
-
-        public void QueueDirection(Vector3 direction)
-        {
-            direction.y = 0;
-            direction.Normalize();
-
-            if(ServerManager.Instance)
-            {
-                ServerManager.Instance.QueueDirection(direction, PrintStuff);
-            }
-        }
-
         void Start()
         {
             instance = this;
@@ -201,6 +185,15 @@ namespace LudumDare39
                         readIds.Remove(removeId);
                     }
                 }
+            }
+        }
+#else
+        public void QueueDirection(Vector3 direction)
+        {
+            // Queue the direction into this manager
+            if (ClientManager.Instance != null)
+            {
+                ClientManager.Instance.QueueDirection(direction, "<Placeholder>", PrintStuff);
             }
         }
 #endif

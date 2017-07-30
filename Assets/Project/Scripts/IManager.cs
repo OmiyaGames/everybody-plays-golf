@@ -24,10 +24,6 @@ namespace LudumDare39
         [SerializeField]
         protected string baseUrl = "http://omiyagames.com/epg_ld39/";
 
-        // TODO: move these 2 field to their respective files
-        [SerializeField]
-        protected string addScoreFileName = "AddDirection.php";
-
         public static string ServerIpAddress
         {
             get
@@ -134,30 +130,6 @@ namespace LudumDare39
                     onResult(false, postWww.error);
                 }
             }
-        }
-
-        public void QueueDirection(Vector3 direction, System.Action<bool, string> onResult)
-        {
-            // Get string versions of most args
-            string x = direction.x.ToString();
-            string z = direction.z.ToString();
-            string time = Network.time.ToString();
-
-            // Generate MD5
-            builder.Length = 0;
-            builder.Append(time);
-            builder.Append(x);
-            builder.Append(z);
-            builder.Append(secretKey);
-            string hash = Md5Sum(builder.ToString());
-
-            // Build header
-            formData.Clear();
-            formData.Add(new MultipartFormDataSection("time", time));
-            formData.Add(new MultipartFormDataSection("x", x));
-            formData.Add(new MultipartFormDataSection("z", z));
-            formData.Add(new MultipartFormDataSection("hash", hash));
-            StartCoroutine(Post(addScoreFileName, formData, onResult));
         }
 #endregion
 

@@ -10,7 +10,7 @@
  
         $secretKey="mySecretKey"; # Change this value to match the value stored in the client javascript below 
 
-        $real_hash = md5($time . $x . $z . $secretKey); 
+		$real_hash = md5($time . $x . $z . $name . $secretKey); 
         if($real_hash == $hash) { 
             // Send variables for the MySQL database class. 
             $query = "insert into directions values (NULL, '$time', '$x', '$z', '$name', '0');"; 
