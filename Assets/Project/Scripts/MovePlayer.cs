@@ -151,8 +151,10 @@ namespace LudumDare39
             {
                 if (CanMove == true)
                 {
+                    // Calculate the direction to move
                     Vector3 direction = MoveCursor.Instance.transform.position - transform.position;
                     NormalizeDirection(ref direction);
+
 #if SERVER
                     // If the server, just move the ball directly
                     Move(direction, false);
