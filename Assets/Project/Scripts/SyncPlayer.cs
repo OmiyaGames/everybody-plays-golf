@@ -13,6 +13,8 @@ namespace LudumDare39
 
         [SyncVar]
         Vector3 startingPosition;
+        [SyncVar]
+        float syncTime;
         [SerializeField]
         float syncEverySeconds = 0.2f;
 
@@ -88,6 +90,7 @@ namespace LudumDare39
 
         void Update()
         {
+            syncTime = (float)Network.time;
             if(queuedDirections.Count > 0)
             {
                 foreach(ServerManager.Direction direction in queuedDirections)
@@ -193,7 +196,7 @@ namespace LudumDare39
             // Queue the direction into this manager
             if (ClientManager.Instance != null)
             {
-                ClientManager.Instance.QueueDirection(direction, "<Placeholder>", PrintStuff);
+                ClientManager.Instance.QueueDirection(direction, "<Placeholder>", syncTime, PrintStuff);
             }
         }
 #endif
