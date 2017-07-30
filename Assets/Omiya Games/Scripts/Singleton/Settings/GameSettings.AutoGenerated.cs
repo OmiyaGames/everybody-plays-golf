@@ -17,6 +17,7 @@
             new OmiyaGames.Settings.AddLanguageSettings(),
             new LudumDare39.AddHighScores(),
             new LudumDare39.AddOptions(),
+            new LudumDare39.AddPower(),
         };
 
         /// <summary>
@@ -77,6 +78,12 @@
                         AllSettingsVersions[4].GetSetting("Is Flashes Enabled"),
                         AllSettingsVersions[4].GetSetting("Is Motion Blurs Enabled"),
                         AllSettingsVersions[4].GetSetting("Is Bloom Enabled"),
+                        #endregion
+
+                        #region ISingleSettings from version 5
+                        AllSettingsVersions[5].GetSetting("Current Energy"),
+                        AllSettingsVersions[5].GetSetting("Player Name"),
+                        AllSettingsVersions[5].GetSetting("Last Game ID"),
                         #endregion
                     };
                 }
@@ -553,6 +560,53 @@
             internal set
             {
                 AllSettingsVersions[4].GetGenerator<OmiyaGames.Settings.StoredBoolGenerator>("Is Bloom Enabled").SetValue(value, Settings, AppVersion);
+            }
+        }
+        #endregion
+
+        #region Properties from AppVersion 5
+        /// <summary>
+        /// Current energy on the dreaded energy meter.
+        /// </summary>
+        public int CurrentEnergy
+        {
+            get
+            {
+                return AllSettingsVersions[5].GetGenerator<OmiyaGames.Settings.StoredIntGenerator>("Current Energy").Value;
+            }
+            set
+            {
+                AllSettingsVersions[5].GetGenerator<OmiyaGames.Settings.StoredIntGenerator>("Current Energy").SetValue(value, Settings, AppVersion);
+            }
+        }
+
+        /// <summary>
+        /// Stored name.
+        /// </summary>
+        public string PlayerName
+        {
+            get
+            {
+                return AllSettingsVersions[5].GetGenerator<OmiyaGames.Settings.StoredStringGenerator>("Player Name").Value;
+            }
+            set
+            {
+                AllSettingsVersions[5].GetGenerator<OmiyaGames.Settings.StoredStringGenerator>("Player Name").SetValue(value, Settings, AppVersion);
+            }
+        }
+
+        /// <summary>
+        /// Every time the golf ball makes it into the hole, the server game ID will go up by one.  This is the ID that the player last played.  If different from the server, proceed to recover energy.
+        /// </summary>
+        public int LastGameID
+        {
+            get
+            {
+                return AllSettingsVersions[5].GetGenerator<OmiyaGames.Settings.StoredIntGenerator>("Last Game ID").Value;
+            }
+            set
+            {
+                AllSettingsVersions[5].GetGenerator<OmiyaGames.Settings.StoredIntGenerator>("Last Game ID").SetValue(value, Settings, AppVersion);
             }
         }
         #endregion
