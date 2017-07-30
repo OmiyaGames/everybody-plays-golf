@@ -7,8 +7,6 @@ namespace LudumDare39
     public class SpawnPlayer : NetworkBehaviour
     {
         [SerializeField]
-        float delaySpawning = 1f;
-        [SerializeField]
         SyncPlayer golfBall;
         [SerializeField]
         Transform spawnLocation;
