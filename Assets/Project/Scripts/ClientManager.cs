@@ -42,10 +42,10 @@ namespace LudumDare39
 
         public void Reconnect()
         {
-            //Manager.StopClient();
+            Manager.StopClient();
 
-            //Debug.Log("Connecting to IP Address " + ServerIpAddress + " and Port " + Port);
-            //Manager.StartClient();
+            Debug.Log("Connecting to IP Address " + ServerIpAddress + " and Port " + Port);
+            Manager.StartClient();
             lastAttemptAtConnecting = Time.time;
         }
 
