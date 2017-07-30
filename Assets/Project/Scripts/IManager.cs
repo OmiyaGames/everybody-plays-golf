@@ -14,29 +14,17 @@ namespace LudumDare39
         public const string ServerIpAddressField = "ServerIpAddress";
         const string secretKey = "0VZ;g3r0m4>Ug7a[.oi5";
 
-        public struct Direction
-        {
-            public readonly int id;
-            public readonly float networkTime;
-            public readonly Vector3 direction;
-
-            public Direction(int id, float networkTime, Vector3 direction)
-            {
-                this.id = id;
-                this.networkTime = networkTime;
-                this.direction = direction;
-            }
-        }
-
-        NetworkManager manager = null;
         static readonly Dictionary<string, string> cachedUrls = new Dictionary<string, string>();
+
         readonly System.Text.StringBuilder builder = new System.Text.StringBuilder();
         readonly List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
 
+        NetworkManager manager = null;
+
         [SerializeField]
         protected string baseUrl = "http://omiyagames.com/epg_ld39/";
-        [SerializeField]
-        protected string getScoresFileName = "GetDirections.php";
+
+        // TODO: move these 2 field to their respective files
         [SerializeField]
         protected string addScoreFileName = "AddDirection.php";
         [SerializeField]
@@ -83,10 +71,37 @@ namespace LudumDare39
             return fullUrl;
         }
 
-#region Gets
+        #region Gets
         public IEnumerator Get(string phpFileName, System.Action<bool, string> onResult)
         {
-            WWW getWww = new WWW(GetUrl(phpFileName));
+            yield return StartCoroutine(Get(phpFileName, null, onResult));
+        }
+
+        public IEnumerator Get(string phpFileName, IDictionary<string, string> args, System.Action<bool, string> onResult)
+        {
+            string url = GetUrl(phpFileName);
+            if((args != null) && (args.Count > 0))
+            {
+                bool prependAnd = false;
+                builder.Length = 0;
+                builder.Append(url);
+                builder.Append('?');
+
+                foreach(KeyValuePair<string, string> pair in args)
+                {
+                    if(prependAnd == true)
+                    {
+                        builder.Append('&');
+                    }
+                    builder.Append(pair.Key);
+                    builder.Append('=');
+                    builder.Append(pair.Value);
+                    prependAnd = true;
+                }
+                url = builder.ToString();
+            }
+
+            WWW getWww = new WWW(url);
             yield return getWww;
 
             if(onResult != null)
@@ -100,51 +115,6 @@ namespace LudumDare39
                     onResult(false, getWww.error);
                 }
             }
-        }
-
-        public void GetDirections(System.Action<bool, string> onResult)
-        {
-            StartCoroutine(Get(GetUrl(getScoresFileName), onResult));
-        }
-
-        static readonly char[] Newline = new char[] { '\n' };
-        const char Divider = ',';
-        const int IdIndex = 0;
-        const int TimeIndex = IdIndex + 1;
-        const int XIndex = TimeIndex + 1;
-        const int ZIndex = XIndex + 1;
-
-        public List<Direction> ConvertToDirections(string info)
-        {
-            List<Direction> directions = new List<Direction>(10);
-
-            // Setup vars
-            int id;
-            float time, x, z;
-            Vector3 direction = Vector3.zero;
-            string[] cols = null;
-
-            // split by lines
-            string[] rows = info.Split(Newline, System.StringSplitOptions.RemoveEmptyEntries);
-            foreach (string row in rows)
-            {
-                // Split by comma
-                cols = info.Split(Divider);
-
-                // Try to parse everything
-                if((cols.Length > ZIndex) &&
-                    int.TryParse(cols[IdIndex], out id) &&
-                    float.TryParse(cols[TimeIndex], out time) &&
-                    float.TryParse(cols[XIndex], out x) &&
-                    float.TryParse(cols[ZIndex], out z))
-                {
-                    // If successful, add a new direction
-                    direction.x = x;
-                    direction.z = z;
-                    directions.Add(new Direction(id, time, direction));
-                }
-            }
-            return directions;
         }
         #endregion
 
