@@ -89,7 +89,7 @@ namespace LudumDare39
         {
             get
             {
-#if !SERVER || UNITY_EDITOR
+#if SERVER || UNITY_EDITOR
                 return ((MoveCursor.Instance != null) && (MoveCursor.Instance.HasLocation == true));
 #else
                 return ((MoveCursor.Instance != null) && (MoveCursor.Instance.HasLocation == true));
