@@ -9,7 +9,7 @@ namespace LudumDare39
     {
         public const ushort AppVersion = 5;
         public const int DefaultMaxEnergy = 7;
-        public const int DefaultGameId = 0;
+        public const int DefaultGameId = -1;
         public const string MaxEnergyField = "MaxEnergy";
 
         public override ushort Version
@@ -26,7 +26,7 @@ namespace LudumDare39
             return null;
         }
 
-        public int MaxEnergy
+        public static int MaxEnergy
         {
             get
             {
@@ -48,6 +48,14 @@ namespace LudumDare39
                     TooltipDocumentation = new string[]
                     {
                         "Current energy on the dreaded energy meter."
+                    },
+                    Converter = GetEnergy
+                },
+                new StoredIntGenerator("Last Max Energy", DefaultMaxEnergy)
+                {
+                    TooltipDocumentation = new string[]
+                    {
+                        "The max energy when we last played (this can potentially change)."
                     },
                     Converter = GetEnergy
                 },
