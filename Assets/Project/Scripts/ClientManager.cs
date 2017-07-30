@@ -5,32 +5,12 @@ using UnityEngine.Networking;
 
 namespace LudumDare39
 {
-    public class ClientManager : MonoBehaviour
+    [RequireComponent(typeof(NetworkManager))]
+    public class ClientManager : IManager
     {
-        public const string DefaultServerUrl = "localhost";
-        public const string ServerUrlField = "ServerUrl";
-
-        public static string ServerUrl
-        {
-            get
-            {
-                return RemoteSettings.GetString(ServerUrlField, DefaultServerUrl);
-            }
-        }
-
-        NetworkClient myClient;
-
         void Start()
         {
-            myClient = new NetworkClient();
-            myClient.RegisterHandler(MsgType.Connect, OnConnected);
-            myClient.Connect(ServerUrl, ServerManager.Port);
-        }
-
-        private void OnConnected(NetworkMessage netMsg)
-        {
-            // FIXME: Do something!
-            Debug.Log("Connected to server");
+            Manager.StartHost();
         }
     }
 }

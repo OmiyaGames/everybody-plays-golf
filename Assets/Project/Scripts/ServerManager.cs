@@ -4,25 +4,15 @@ using System.Collections;
 
 namespace LudumDare39
 {
-    public class ServerManager : MonoBehaviour
+    [RequireComponent(typeof(NetworkManager))]
+    public class ServerManager : IManager
     {
-        public const int DefaultPort = 7777;
-        public const string PortField = "Port";
-
         [SerializeField]
         float reconnectAfter = 3f;
         [SerializeField]
         SpawnPlayer spawnScript;
 
         float lastAttemptAtConnecting = 0f;
-
-        public static int Port
-        {
-            get
-            {
-                return RemoteSettings.GetInt(PortField, DefaultPort);
-            }
-        }
 
         void Start()
         {
@@ -44,11 +34,11 @@ namespace LudumDare39
         void Reconnect()
         {
             // Disconnect everything
-            NetworkServer.Shutdown();
+            Manager.StopServer();
 
             // Attempt to reconnect again
             Debug.Log("Connecting to Port " + Port);
-            NetworkServer.Listen(Port);
+            Manager.StartServer();
             lastAttemptAtConnecting = Time.time;
         }
     }
