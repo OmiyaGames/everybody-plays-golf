@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using OmiyaGames;
+using OmiyaGames.Settings;
 
 namespace LudumDare39
 {
@@ -11,12 +13,15 @@ namespace LudumDare39
     {
         static SyncPlayer instance;
 
+        [SerializeField]
+        float syncEverySeconds = 0.2f;
+
         [SyncVar]
         Vector3 startingPosition;
         [SyncVar]
         float syncTime;
-        [SerializeField]
-        float syncEverySeconds = 0.2f;
+        [SyncVar]
+        int gameId;
 
         MovePlayer player = null;
         WaitForSeconds waitForSync = null;
@@ -54,6 +59,22 @@ namespace LudumDare39
             }
         }
 
+        public float NetworkTime
+        {
+            get
+            {
+                return syncTime;
+            }
+        }
+
+        public int GameId
+        {
+            get
+            {
+                return gameId;
+            }
+        }
+
         public WaitForSeconds WaitForSync
         {
             get
@@ -71,6 +92,7 @@ namespace LudumDare39
         {
             instance = this;
 #if SERVER
+            gameId = 0;
             StartCoroutine(QueryDatabase());
 #endif
         }
@@ -196,7 +218,7 @@ namespace LudumDare39
             // Queue the direction into this manager
             if (ClientManager.Instance != null)
             {
-                ClientManager.Instance.QueueDirection(direction, "<Placeholder>", syncTime, PrintStuff);
+                ClientManager.Instance.QueueDirection(direction, Singleton.Get<GameSettings>().PlayerName, syncTime, PrintStuff);
             }
         }
 #endif
