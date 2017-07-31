@@ -51,7 +51,7 @@ namespace LudumDare39
         {
             Manager.StopClient();
 
-            Debug.Log("Connecting to IP Address " + ServerIpAddress + " and Port " + Port);
+            Debug.Log("Connecting to IP Address " + Manager.networkAddress + " and Port " + Manager.networkPort);
             Manager.StartClient();
             lastAttemptAtConnecting = Time.time;
         }

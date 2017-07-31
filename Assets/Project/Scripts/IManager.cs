@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿#define CUSTOM_IP
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -47,8 +49,10 @@ namespace LudumDare39
                 if(manager == null)
                 {
                     manager = GetComponent<NetworkManager>();
+#if !CUSTOM_IP
                     manager.networkAddress = ServerIpAddress;
                     manager.networkPort = Port;
+#endif
                 }
                 return manager;
             }
@@ -80,7 +84,7 @@ namespace LudumDare39
             return fullUrl;
         }
 
-        #region Gets
+#region Gets
         public IEnumerator Get(string phpFileName, System.Action<bool, string> onResult)
         {
             yield return StartCoroutine(Get(phpFileName, null, onResult));
@@ -125,9 +129,9 @@ namespace LudumDare39
                 }
             }
         }
-        #endregion
+#endregion
 
-        #region Posts
+#region Posts
         public IEnumerator Post(string phpFileName, List<IMultipartFormSection> form, System.Action<bool, string> onResult)
         {
             // Post the URL to the site and create a download object to get the result.
