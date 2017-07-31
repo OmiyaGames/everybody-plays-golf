@@ -58,6 +58,10 @@ namespace LudumDare39
         [SerializeField]
         BaseMenu gameCompleteMenu;
 
+        [Header("Other Stuff")]
+        [SerializeField]
+        EnergyMeter meter;
+
         public static GameSettings Settings
         {
             get
@@ -148,7 +152,8 @@ namespace LudumDare39
         {
             setupState = SetupState.None;
             currentState = MenuState.Start;
-            foreach(IAnimatedMenu menu in StateToMenuMap.Values)
+            meter.Parent = this;
+            foreach (IAnimatedMenu menu in StateToMenuMap.Values)
             {
                 menu.Parent = this;
             }
