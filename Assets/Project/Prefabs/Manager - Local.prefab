@@ -154,6 +154,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224173327390374250}
+  - component: {fileID: 222822012088410014}
+  - component: {fileID: 114996680234578862}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -2351,6 +2353,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   field: {fileID: 114822112724558962}
   errorLabel: {fileID: 1134554954065788}
+  label: {fileID: 114076670884674220}
+  invalidCharMsg: Sorry, no pipes (|) allowed!
+  cannotBeEmptyMsg: Field is required.
 --- !u!114 &114168448056178746
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6884,6 +6889,33 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114996680234578862
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1112053671709680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.453}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
 --- !u!222 &222001272009913690
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -7154,6 +7186,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1389613356931688}
+--- !u!222 &222822012088410014
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1112053671709680}
 --- !u!222 &222837110024134050
 CanvasRenderer:
   m_ObjectHideFlags: 1
