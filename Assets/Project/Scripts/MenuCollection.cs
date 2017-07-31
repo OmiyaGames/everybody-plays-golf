@@ -9,7 +9,6 @@ namespace LudumDare39
 {
     public class MenuCollection : MonoBehaviour
     {
-#if !SERVER
         public enum MenuState
         {
             Connecting = -1,
@@ -57,6 +56,14 @@ namespace LudumDare39
         BaseMenu noEnergyMenu;
         [SerializeField]
         BaseMenu gameCompleteMenu;
+
+        public static GameSettings Settings
+        {
+            get
+            {
+                return Singleton.Get<GameSettings>();
+            }
+        }
 
         SetupState setupState = SetupState.None;
         MenuState currentState = MenuState.Start;
@@ -135,14 +142,7 @@ namespace LudumDare39
             }
         }
 
-        public static GameSettings Settings
-        {
-            get
-            {
-                return Singleton.Get<GameSettings>();
-            }
-        }
-
+#if !SERVER
         void Start()
         {
             setupState = SetupState.None;
