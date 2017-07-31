@@ -6,11 +6,14 @@ using UnityEngine;
 namespace LudumDare39
 {
     [RequireComponent(typeof(Animator))]
-    public class StartMenu : BaseMenu
+    public class TutorialMenu : BaseMenu
     {
+        [SerializeField]
+        MenuCollection.MenuState nextState = MenuCollection.MenuState.Playing;
+
         public void OnButtonClicked()
         {
-            Parent.CurrentState = MenuCollection.MenuState.EnterName;
+            Parent.CurrentState = nextState;
         }
     }
 }

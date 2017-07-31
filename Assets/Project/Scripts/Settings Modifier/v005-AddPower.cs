@@ -20,6 +20,7 @@ namespace LudumDare39
             // Remember to add new flags at the end of the enum!
             None = 0,
             LowEnergy = 1 << 1,
+            ControlsTutorial = 1 << 2
         }
 
         class ClampEnergy : PropertyStoredSettingsGenerator<int>.ValueProcessor
