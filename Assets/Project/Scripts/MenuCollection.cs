@@ -32,6 +32,7 @@ namespace LudumDare39
             RemoteSettingsReady = 1 << 1,
             GameSettingsReady = 1 << 2,
             CursorReady = 1 << 3,
+            ConnectionReady = RemoteSettingsReady | CursorReady,
             AllReady = RemoteSettingsReady | GameSettingsReady | CursorReady
         }
 
