@@ -70,12 +70,21 @@ namespace LudumDare39
             }
         }
 
+        static MenuCollection instance = null;
         SetupState setupState = SetupState.None;
         MenuState currentState = MenuState.Start;
         MenuState lastState = MenuState.Start;
         MenuState stateAfterEnteringName = MenuState.Playing;
 
         readonly Dictionary<MenuState, IAnimatedMenu> stateToMenuMap = new Dictionary<MenuState, IAnimatedMenu>();
+
+        public static MenuCollection Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
 
         public Dictionary<MenuState, IAnimatedMenu> StateToMenuMap
         {
@@ -150,8 +159,13 @@ namespace LudumDare39
 #if !SERVER
         void Start()
         {
+            // FIXME remove these
+            //Settings.ClearSettings();
+
+
             setupState = SetupState.None;
             currentState = MenuState.Start;
+            instance = this;
             meter.Parent = this;
             foreach (IAnimatedMenu menu in StateToMenuMap.Values)
             {
