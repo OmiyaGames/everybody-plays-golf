@@ -14,6 +14,14 @@ namespace LudumDare39
         public const int DefaultGameId = -1;
         public const string MaxEnergyField = "MaxEnergy";
 
+        [Flags]
+        public enum TutorialFlags
+        {
+            // Remember to add new flags at the end of the enum!
+            None = 0,
+            LowEnergy = 1 << 1,
+        }
+
         class ClampEnergy : PropertyStoredSettingsGenerator<int>.ValueProcessor
         {
             public int Process(int value)
@@ -30,18 +38,23 @@ namespace LudumDare39
             }
         }
 
-        protected override string[] GetKeysToRemove()
-        {
-            // Do nothing!
-            return null;
-        }
-
         public static int MaxEnergy
         {
             get
             {
-                return UnityEngine.RemoteSettings.GetInt(MaxEnergyField, DefaultMaxEnergy);
+                return RemoteSettings.GetInt(MaxEnergyField, DefaultMaxEnergy);
             }
+        }
+
+        public static bool HaveSeenTutorial(TutorialFlags setting, TutorialFlags tutorialInQuestion)
+        {
+            return (setting & tutorialInQuestion) != 0;
+        }
+
+        protected override string[] GetKeysToRemove()
+        {
+            // Do nothing!
+            return null;
         }
 
         int GetEnergy(ISettingsRecorder settings, string key, int recordedVersion, int latestVersion, int defaultValue)
@@ -82,6 +95,13 @@ namespace LudumDare39
                     TooltipDocumentation = new string[]
                     {
                         "Every time the golf ball makes it into the hole, the server game ID will go up by one.  This is the ID that the player last played.  If different from the server, proceed to recover energy."
+                    }
+                },
+                new StoredEnumGenerator<TutorialFlags>("Seen Tutorial", TutorialFlags.None)
+                {
+                    TooltipDocumentation = new string[]
+                    {
+                        "Flag indicating which tutorials have been seen."
                     }
                 },
             };
