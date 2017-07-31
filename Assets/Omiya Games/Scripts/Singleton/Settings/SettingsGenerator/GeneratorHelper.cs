@@ -256,6 +256,9 @@ namespace OmiyaGames.Settings
                 correctedType = genericTypeTester.Replace(correctedType, @"<$1>");
             }
 
+            // Next, replace any "+" with "."
+            correctedType = correctedType.Replace('+', '.');
+
             // Replace any common types to simplified text
             correctedType = correctedType.Replace("System.Int32", "int");
             correctedType = correctedType.Replace("System.Single", "float");

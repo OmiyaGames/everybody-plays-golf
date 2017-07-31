@@ -15,8 +15,6 @@ namespace LudumDare39
         [SerializeField]
         string addScoreFileName = "AddDirection.php";
 
-        float lastAttemptAtConnecting;
-
         public static ClientManager Instance
         {
             get
@@ -26,15 +24,24 @@ namespace LudumDare39
         }
 
 #if !SERVER
+        float lastAttemptAtConnecting;
+        bool isReady = false;
+
         void Start()
         {
             instance = this;
+            RemoteSettings.Updated += RemoteSettings_Updated;
+        }
+
+        private void RemoteSettings_Updated()
+        {
+            isReady = true;
             Reconnect();
         }
 
         private void Update()
         {
-            if ((Manager.client.isConnected == false) && ((Time.time - lastAttemptAtConnecting) > reconnectAfter))
+            if ((isReady == true) && (IsClientConnected == false) && ((Time.time - lastAttemptAtConnecting) > reconnectAfter))
             {
                 Reconnect();
             }
