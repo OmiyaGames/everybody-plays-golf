@@ -39,7 +39,7 @@ namespace LudumDare39
         {
             if((MovePlayer.Instance != null) && (MovePlayer.Instance.transform.position.y < falloutThreshold.position.y))
             {
-                MovePlayer.Instance.Reset();
+                MovePlayer.Instance.Reset(false);
             }
         }
 #endif
@@ -56,7 +56,7 @@ namespace LudumDare39
                 yield return WaitBeforeReset;
 
                 // reset player position
-                MovePlayer.Instance.Reset();
+                MovePlayer.Instance.Reset(true);
             }
 
             // Wait for a frame
