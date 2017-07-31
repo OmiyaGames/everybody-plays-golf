@@ -96,15 +96,24 @@ namespace LudumDare39
 #endif
             }
         }
-#endregion
+        #endregion
 
-        public void Reset()
+#if SERVER
+        public void Reset(bool isNewGame)
         {
+            // Move the Rigidbody
             Body.isKinematic = true;
             transform.position = SyncedInfo.StartingPosition;
             Body.velocity = Vector3.zero;
             Body.isKinematic = false;
+            
+            // Setup the next game
+            if(isNewGame == true)
+            {
+                SyncedInfo.SetupNextGame();
+            }
         }
+#endif
 
         public void Move(Vector3 direction)
         {
