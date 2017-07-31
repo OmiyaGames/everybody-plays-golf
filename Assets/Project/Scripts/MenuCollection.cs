@@ -15,7 +15,15 @@ namespace LudumDare39
             Connecting = -1,
             Playing = 0,
             Start,
-
+            EnterName,
+            Explanation,
+            Goal,
+            Controls,
+            Congrats,
+            EnergyCost,
+            LowEnergy,
+            NoEnergy,
+            GameComplete
         }
 
         [System.Flags]
@@ -29,10 +37,31 @@ namespace LudumDare39
 
         [SerializeField]
         StartMenu startMenu;
+        [SerializeField]
+        BaseMenu connectingMenu;
+        [SerializeField]
+        BaseMenu enterName;
+        [SerializeField]
+        BaseMenu explanationMenu;
+        [SerializeField]
+        BaseMenu goalMenu;
+        [SerializeField]
+        BaseMenu controlsMenu;
+        [SerializeField]
+        BaseMenu congratsMenu;
+        [SerializeField]
+        BaseMenu energyCostMenu;
+        [SerializeField]
+        BaseMenu lowEnergyMenu;
+        [SerializeField]
+        BaseMenu noEnergyMenu;
+        [SerializeField]
+        BaseMenu gameCompleteMenu;
 
         SetupState setupState = SetupState.None;
         MenuState currentState = MenuState.Start;
         MenuState lastState = MenuState.Start;
+        MenuState stateAfterEnteringName = MenuState.Playing;
 
         readonly Dictionary<MenuState, IAnimatedMenu> stateToMenuMap = new Dictionary<MenuState, IAnimatedMenu>();
 
@@ -44,6 +73,16 @@ namespace LudumDare39
                 {
                     // FIXME: add the rest of the menus here
                     stateToMenuMap.Add(MenuState.Start, startMenu);
+                    stateToMenuMap.Add(MenuState.Connecting, connectingMenu);
+                    stateToMenuMap.Add(MenuState.EnterName, enterName);
+                    stateToMenuMap.Add(MenuState.Explanation, explanationMenu);
+                    stateToMenuMap.Add(MenuState.Goal, goalMenu);
+                    stateToMenuMap.Add(MenuState.Controls, controlsMenu);
+                    stateToMenuMap.Add(MenuState.Congrats, congratsMenu);
+                    stateToMenuMap.Add(MenuState.EnergyCost, energyCostMenu);
+                    stateToMenuMap.Add(MenuState.LowEnergy, lowEnergyMenu);
+                    stateToMenuMap.Add(MenuState.NoEnergy, noEnergyMenu);
+                    stateToMenuMap.Add(MenuState.GameComplete, gameCompleteMenu);
                 }
                 return stateToMenuMap;
             }
@@ -54,6 +93,14 @@ namespace LudumDare39
             get
             {
                 return ((setupState == SetupState.AllReady) && (ClientManager.Instance) && (ClientManager.Instance.Manager.client.isConnected == true));
+            }
+        }
+
+        public MenuState AfterEnterName
+        {
+            get
+            {
+                return stateAfterEnteringName;
             }
         }
 
@@ -79,6 +126,10 @@ namespace LudumDare39
                     if (StateToMenuMap.ContainsKey(lastState) == true)
                     {
                         StateToMenuMap[lastState].IsVisible = false;
+                    }
+                    if(currentState == MenuState.GameComplete)
+                    {
+                        stateAfterEnteringName = currentState;
                     }
                 }
             }
@@ -118,8 +169,9 @@ namespace LudumDare39
             UpdateMenuVisibility();
         }
 
-        private static void SetupSettings()
+        private void SetupSettings()
         {
+            stateAfterEnteringName = MenuState.Playing;
             if (Settings.LastGameID == AddPower.DefaultGameId)
             {
                 // This is the first time the player started.
@@ -155,7 +207,21 @@ namespace LudumDare39
 
                     // Update the game ID
                     Settings.LastGameID = SyncPlayer.Instance.GameId;
+
+                    // Show the game complete dialog next
+                    stateAfterEnteringName = MenuState.GameComplete;
                 }
+            }
+            Singleton.Get<GameSettings>().SaveSettings();
+
+            // Check if we haven't seen the tutorial fully yet
+            if(AddPower.HaveSeenTutorial(Settings.SeenTutorial, AddPower.TutorialFlags.ControlsTutorial) == false)
+            {
+                stateAfterEnteringName = MenuState.Explanation;
+            }
+            else if (AddPower.HaveSeenTutorial(Settings.SeenTutorial, AddPower.TutorialFlags.LowEnergy) == false)
+            {
+                stateAfterEnteringName = MenuState.LowEnergy;
             }
         }
 

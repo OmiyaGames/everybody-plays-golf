@@ -11,6 +11,7 @@ namespace LudumDare39
     [RequireComponent(typeof(NetworkIdentity))]
     public class SyncPlayer : NetworkBehaviour
     {
+        public const char Divider = '|';
         static SyncPlayer instance;
 
         [SerializeField]
@@ -106,7 +107,6 @@ namespace LudumDare39
         }
 
 #if SERVER
-        const char Divider = '|';
         const int IdIndex = 0;
         const int TimeIndex = IdIndex + 1;
         const int XIndex = TimeIndex + 1;

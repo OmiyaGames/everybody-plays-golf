@@ -38,7 +38,7 @@ namespace LudumDare39
             }
         }
 
-        public bool IsVisible
+        public virtual bool IsVisible
         {
             get
             {
