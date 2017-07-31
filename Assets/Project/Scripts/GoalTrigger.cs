@@ -13,6 +13,15 @@ namespace LudumDare39
 
         float timeTriggered = -1f;
         WaitForSeconds waitBeforeReset = null;
+        static GoalTrigger instance;
+
+        public static GoalTrigger Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
 
         WaitForSeconds WaitBeforeReset
         {
@@ -32,6 +41,11 @@ namespace LudumDare39
             {
                 StartCoroutine(DelayReset());
             }
+        }
+
+        private void Start()
+        {
+            instance = this;
         }
 
 #if SERVER
