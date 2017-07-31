@@ -89,11 +89,7 @@ namespace LudumDare39
         {
             get
             {
-#if SERVER || UNITY_EDITOR
                 return ((MoveCursor.Instance != null) && (MoveCursor.Instance.HasLocation == true));
-#else
-                return ((MoveCursor.Instance != null) && (MoveCursor.Instance.HasLocation == true));
-#endif
             }
         }
         #endregion
@@ -156,26 +152,42 @@ namespace LudumDare39
 
         void Update()
         {
-            if (Input.GetMouseButtonUp(0) == true)
+            if ((Input.GetMouseButtonDown(0) == true) && (CanMove == true))
             {
-                if (CanMove == true)
-                {
-                    // Calculate the direction to move
-                    Vector3 direction = MoveCursor.Instance.transform.position - transform.position;
-                    NormalizeDirection(ref direction);
+                // Calculate the direction to move
+                Vector3 direction = MoveCursor.Instance.transform.position - transform.position;
+                NormalizeDirection(ref direction);
 
 #if SERVER
-                    // If the server, just move the ball directly
-                    Move(direction, false);
+                // If the server, just move the ball directly
+                Move(direction, false);
 #else
-                    // If the client, send to the database the direction you've entered
-                    SyncedInfo.QueueDirection(direction);
-#endif
-                }
-                else
+                if (MenuCollection.Instance != null)
                 {
-                    // FIXME: notify player can't move
+                    if (MenuCollection.Settings.CurrentEnergy > 0)
+                    {
+                        // If the client, send to the database the direction you've entered
+                        SyncedInfo.QueueDirection(direction);
+                        MenuCollection.Settings.CurrentEnergy -= 1;
+
+                        if (MenuCollection.Instance.CurrentState == MenuCollection.MenuState.Controls)
+                        {
+                            MenuCollection.Instance.CurrentState = MenuCollection.MenuState.Congrats;
+                        }
+                        else if (((MenuCollection.Settings.SeenTutorial & AddPower.TutorialFlags.LowEnergy) == 0) &&
+                        (MenuCollection.Settings.CurrentEnergy < (AddPower.MaxEnergy / 2)) &&
+                        (MenuCollection.Instance.CurrentState == MenuCollection.MenuState.Playing))
+                        {
+                            // Check if we're half-way through the energy, and haven't seen the tutorial yet
+                            MenuCollection.Instance.CurrentState = MenuCollection.MenuState.LowEnergy;
+                        }
+                    }
+                    else if (MenuCollection.Instance.CurrentState == MenuCollection.MenuState.Playing)
+                    {
+                        MenuCollection.Instance.CurrentState = MenuCollection.MenuState.NoEnergy;
+                    }
                 }
+#endif
             }
         }
 #endregion
