@@ -279,7 +279,7 @@ MonoBehaviour:
     m_Enabled: 1
     m_Settings:
       lut: {fileID: 2800000, guid: ff5f3317371838d4fa16ac6c2acf2040, type: 3}
-      contribution: 0.15
+      contribution: 0.11
   chromaticAberration:
     m_Enabled: 0
     m_Settings:
