@@ -31,7 +31,8 @@ namespace LudumDare39
             None = 0,
             RemoteSettingsReady = 1 << 1,
             GameSettingsReady = 1 << 2,
-            AllReady = RemoteSettingsReady | GameSettingsReady
+            CursorReady = 1 << 3,
+            AllReady = RemoteSettingsReady | GameSettingsReady | CursorReady
         }
 
         [SerializeField]
@@ -161,10 +162,15 @@ namespace LudumDare39
 
         private void Update()
         {
-            if ((setupState == SetupState.RemoteSettingsReady) && (SyncPlayer.Instance != null))
+            if (((setupState & SetupState.GameSettingsReady) == 0) && (SyncPlayer.Instance != null))
             {
                 SetupSettings();
                 setupState |= SetupState.GameSettingsReady;
+            }
+            if (((setupState & SetupState.CursorReady) == 0) && (MoveCursor.Instance != null))
+            {
+                MoveCursor.Instance.IsControlEnabled = false;
+                setupState |= SetupState.CursorReady;
             }
             UpdateMenuVisibility();
         }

@@ -1,11 +1,12 @@
 fileFormatVersion: 2
 guid: 6ca21f83f699ec74d8541e3a0dd51f09
-timeCreated: 1501467590
+timeCreated: 1501469590
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: Energy Bolt
     21300002: Up Arrow
+    21300004: Target
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -132,6 +133,20 @@ TextureImporter:
         height: 233
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Target
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 12
+        width: 164
+        height: 164
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
