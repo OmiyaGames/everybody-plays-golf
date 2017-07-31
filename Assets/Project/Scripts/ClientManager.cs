@@ -41,7 +41,7 @@ namespace LudumDare39
 
         private void Update()
         {
-            if ((isReady == true) && (Manager.client.isConnected == false) && ((Time.time - lastAttemptAtConnecting) > reconnectAfter))
+            if ((isReady == true) && (IsClientConnected == false) && ((Time.time - lastAttemptAtConnecting) > reconnectAfter))
             {
                 Reconnect();
             }
