@@ -11,6 +11,13 @@ namespace LudumDare39
         TMPro.TMP_InputField field;
         [SerializeField]
         GameObject errorLabel;
+        [SerializeField]
+        TMPro.TMP_Text label;
+
+        [SerializeField]
+        string invalidCharMsg = "Invalid char";
+        [SerializeField]
+        string cannotBeEmptyMsg = "Name cannot be empty";
 
         public override bool IsVisible
         {
@@ -33,17 +40,24 @@ namespace LudumDare39
         public void OnButtonClicked()
         {
             // Check if input is value
-            if (field.text.IndexOf(SyncPlayer.Divider) < 0)
+            if(string.IsNullOrEmpty(field.text) == true)
+            {
+                // Show error
+                label.text = cannotBeEmptyMsg;
+                errorLabel.SetActive(true);
+            }
+            else if (field.text.IndexOf(SyncPlayer.Divider) >= 0)
+            {
+                // Show error
+                label.text = invalidCharMsg;
+                errorLabel.SetActive(true);
+            }
+            else
             {
                 // Switch scenes
                 MenuCollection.Settings.PlayerName = field.text;
                 errorLabel.SetActive(false);
                 Parent.CurrentState = Parent.AfterEnterName;
-            }
-            else
-            {
-                // Show error
-                errorLabel.SetActive(true);
             }
         }
     }
