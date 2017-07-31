@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using OmiyaGames;
+using OmiyaGames.Settings;
 
 namespace LudumDare39
 {
@@ -9,14 +11,18 @@ namespace LudumDare39
     [RequireComponent(typeof(NetworkIdentity))]
     public class SyncPlayer : NetworkBehaviour
     {
+        public const char Divider = '|';
         static SyncPlayer instance;
+
+        [SerializeField]
+        float syncEverySeconds = 0.2f;
 
         [SyncVar]
         Vector3 startingPosition;
         [SyncVar]
         float syncTime;
-        [SerializeField]
-        float syncEverySeconds = 0.2f;
+        [SyncVar]
+        int gameId;
 
         MovePlayer player = null;
         WaitForSeconds waitForSync = null;
@@ -27,6 +33,14 @@ namespace LudumDare39
             get
             {
                 return instance;
+            }
+        }
+
+        public static GameSettings Settings
+        {
+            get
+            {
+                return Singleton.Get<GameSettings>();
             }
         }
 
@@ -54,6 +68,22 @@ namespace LudumDare39
             }
         }
 
+        public float NetworkTime
+        {
+            get
+            {
+                return syncTime;
+            }
+        }
+
+        public int GameId
+        {
+            get
+            {
+                return gameId;
+            }
+        }
+
         public WaitForSeconds WaitForSync
         {
             get
@@ -71,12 +101,12 @@ namespace LudumDare39
         {
             instance = this;
 #if SERVER
+            gameId = 0;
             StartCoroutine(QueryDatabase());
 #endif
         }
 
 #if SERVER
-        const char Divider = '|';
         const int IdIndex = 0;
         const int TimeIndex = IdIndex + 1;
         const int XIndex = TimeIndex + 1;
@@ -87,6 +117,17 @@ namespace LudumDare39
 
         readonly List<ServerManager.Direction> queuedDirections = new List<ServerManager.Direction>();
         readonly HashSet<int> readIds = new HashSet<int>();
+
+        public void SetupNextGame()
+        {
+            // Increase game ID
+            gameId += 1;
+
+            // Since we're in a new game, increase player energy settings to max
+            // Using LastMaxEnergy, just in case the game hasn't been setup yet.  This prevents some weird edge cases.
+            Settings.LastGameID = gameId;
+            Settings.CurrentEnergy = Settings.LastMaxEnergy;
+        }
 
         void Update()
         {
@@ -196,7 +237,7 @@ namespace LudumDare39
             // Queue the direction into this manager
             if (ClientManager.Instance != null)
             {
-                ClientManager.Instance.QueueDirection(direction, "<Placeholder>", syncTime, PrintStuff);
+                ClientManager.Instance.QueueDirection(direction, Singleton.Get<GameSettings>().PlayerName, syncTime, PrintStuff);
             }
         }
 #endif

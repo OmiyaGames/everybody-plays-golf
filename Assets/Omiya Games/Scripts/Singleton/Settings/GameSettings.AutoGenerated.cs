@@ -82,8 +82,10 @@
 
                         #region ISingleSettings from version 5
                         AllSettingsVersions[5].GetSetting("Current Energy"),
+                        AllSettingsVersions[5].GetSetting("Last Max Energy"),
                         AllSettingsVersions[5].GetSetting("Player Name"),
                         AllSettingsVersions[5].GetSetting("Last Game ID"),
+                        AllSettingsVersions[5].GetSetting("Seen Tutorial"),
                         #endregion
                     };
                 }
@@ -581,6 +583,21 @@
         }
 
         /// <summary>
+        /// The max energy when we last played (this can potentially change).
+        /// </summary>
+        public int LastMaxEnergy
+        {
+            get
+            {
+                return AllSettingsVersions[5].GetGenerator<OmiyaGames.Settings.StoredIntGenerator>("Last Max Energy").Value;
+            }
+            set
+            {
+                AllSettingsVersions[5].GetGenerator<OmiyaGames.Settings.StoredIntGenerator>("Last Max Energy").SetValue(value, Settings, AppVersion);
+            }
+        }
+
+        /// <summary>
         /// Stored name.
         /// </summary>
         public string PlayerName
@@ -607,6 +624,21 @@
             set
             {
                 AllSettingsVersions[5].GetGenerator<OmiyaGames.Settings.StoredIntGenerator>("Last Game ID").SetValue(value, Settings, AppVersion);
+            }
+        }
+
+        /// <summary>
+        /// Flag indicating which tutorials have been seen.
+        /// </summary>
+        public LudumDare39.AddPower.TutorialFlags SeenTutorial
+        {
+            get
+            {
+                return AllSettingsVersions[5].GetGenerator<OmiyaGames.Settings.StoredEnumGenerator<LudumDare39.AddPower.TutorialFlags>>("Seen Tutorial").Value;
+            }
+            set
+            {
+                AllSettingsVersions[5].GetGenerator<OmiyaGames.Settings.StoredEnumGenerator<LudumDare39.AddPower.TutorialFlags>>("Seen Tutorial").SetValue(value, Settings, AppVersion);
             }
         }
         #endregion

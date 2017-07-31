@@ -13,6 +13,15 @@ namespace LudumDare39
 
         float timeTriggered = -1f;
         WaitForSeconds waitBeforeReset = null;
+        static GoalTrigger instance;
+
+        public static GoalTrigger Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
 
         WaitForSeconds WaitBeforeReset
         {
@@ -34,12 +43,17 @@ namespace LudumDare39
             }
         }
 
+        private void Start()
+        {
+            instance = this;
+        }
+
 #if SERVER
         private void Update()
         {
             if((MovePlayer.Instance != null) && (MovePlayer.Instance.transform.position.y < falloutThreshold.position.y))
             {
-                MovePlayer.Instance.Reset();
+                MovePlayer.Instance.Reset(false);
             }
         }
 #endif
@@ -56,7 +70,7 @@ namespace LudumDare39
                 yield return WaitBeforeReset;
 
                 // reset player position
-                MovePlayer.Instance.Reset();
+                MovePlayer.Instance.Reset(true);
             }
 
             // Wait for a frame
