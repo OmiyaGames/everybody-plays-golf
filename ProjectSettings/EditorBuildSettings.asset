@@ -20,3 +20,6 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Project/Scenes/Menus/Credits.unity
     guid: 6d241a6195e8cd04d843ca2225f9ea70
+  - enabled: 0
+    path: Assets/Project/Scenes/testServer.unity
+    guid: d2e964730ff42fa48a451f8c28971d05

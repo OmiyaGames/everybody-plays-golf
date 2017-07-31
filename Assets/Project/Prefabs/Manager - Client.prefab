@@ -69,6 +69,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseUrl: http://omiyagames.com/epg_ld39/
+  reconnectAfter: 3
   addScoreFileName: AddDirection.php
 --- !u!114 &114929818310759594
 MonoBehaviour:
@@ -84,7 +85,7 @@ MonoBehaviour:
   m_NetworkPort: 7777
   m_ServerBindToIP: 0
   m_ServerBindAddress: 
-  m_NetworkAddress: localhost
+  m_NetworkAddress: 35.196.219.140
   m_DontDestroyOnLoad: 1
   m_RunInBackground: 1
   m_ScriptCRCCheck: 1

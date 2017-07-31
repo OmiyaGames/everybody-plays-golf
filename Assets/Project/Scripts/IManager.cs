@@ -1,4 +1,4 @@
-﻿#define CUSTOM_IP
+﻿//#define CUSTOM_IP
 
 using System.Collections;
 using System.Collections.Generic;
@@ -11,7 +11,11 @@ namespace LudumDare39
     public abstract class IManager : MonoBehaviour
     {
         public const int DefaultPort = 7777;
+#if CUSTOM_IP
         public const string DefaultServerIpAddress = "127.0.0.1";
+#else
+        public const string DefaultServerIpAddress = "35.196.219.140";
+#endif
         public const string PortField = "Port";
         public const string ServerIpAddressField = "ServerIpAddress";
         protected const string secretKey = "0VZ;g3r0m4>Ug7a[.oi5";
@@ -53,6 +57,8 @@ namespace LudumDare39
                     manager.networkAddress = ServerIpAddress;
                     manager.networkPort = Port;
 #endif
+                    Debug.Log("Network Address is set to: " + manager.networkAddress);
+                    Debug.Log("Network Port is set to: " + manager.networkPort);
                 }
                 return manager;
             }

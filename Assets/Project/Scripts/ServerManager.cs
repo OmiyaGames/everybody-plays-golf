@@ -50,6 +50,7 @@ namespace LudumDare39
         void Start()
         {
             instance = this;
+            Reconnect();
             RemoteSettings.Updated += RemoteSettings_Updated;
         }
 
@@ -77,10 +78,11 @@ namespace LudumDare39
         void Reconnect()
         {
             // Disconnect everything
+            Debug.Log("Stopping server");
             Manager.StopServer();
 
             // Attempt to reconnect again
-            Debug.Log("Connecting to Port " + Port);
+            Debug.Log("Starting server on " + Manager.networkAddress + ":" + Manager.networkPort);
             Manager.StartServer();
             lastAttemptAtConnecting = Time.time;
         }
