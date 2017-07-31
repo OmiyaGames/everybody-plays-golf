@@ -99,7 +99,7 @@ namespace LudumDare39
         {
             get
             {
-                return ((setupState == SetupState.AllReady) && (ClientManager.Instance) && (ClientManager.Instance.Manager.client.isConnected == true));
+                return ((setupState == SetupState.AllReady) && (ClientManager.Instance) && (ClientManager.Instance.IsClientConnected == true));
             }
         }
 

@@ -54,6 +54,21 @@ namespace LudumDare39
             }
         }
 
+        public bool IsClientConnected
+        {
+            get
+            {
+                if((Manager != null) && (Manager.client != null))
+                {
+                    return Manager.client.isConnected;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
         private string GetUrl(string phpFileName)
         {
             string fullUrl;

@@ -23,6 +23,8 @@ namespace LudumDare39
     {
         public const string VisibleField = "Visible";
 
+        public event System.Action<bool, bool> OnVisibleChanged;
+
         Animator animator;
         MenuCollection parent;
 
@@ -46,6 +48,10 @@ namespace LudumDare39
             }
             set
             {
+                if (OnVisibleChanged != null)
+                {
+                    OnVisibleChanged(IsVisible, value);
+                }
                 Animator.SetBool(VisibleField, value);
             }
         }
