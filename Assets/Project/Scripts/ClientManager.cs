@@ -25,23 +25,22 @@ namespace LudumDare39
 
 #if !SERVER
         float lastAttemptAtConnecting;
-        bool isReady = false;
 
         void Start()
         {
             instance = this;
+            Reconnect();
             RemoteSettings.Updated += RemoteSettings_Updated;
         }
 
         private void RemoteSettings_Updated()
         {
-            isReady = true;
             Reconnect();
         }
 
         private void Update()
         {
-            if ((isReady == true) && (IsClientConnected == false) && ((Time.time - lastAttemptAtConnecting) > reconnectAfter))
+            if ((IsClientConnected == false) && ((Time.time - lastAttemptAtConnecting) > reconnectAfter))
             {
                 Reconnect();
             }
