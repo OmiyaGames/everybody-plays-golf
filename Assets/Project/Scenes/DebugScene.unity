@@ -116,8 +116,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 520070225}
-  - component: {fileID: 520070224}
   - component: {fileID: 520070226}
+  - component: {fileID: 520070224}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -133,11 +133,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 520070223}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc5465cd9a5e76c4ba75ec129e1c17ff, type: 3}
+  m_Script: {fileID: 227461547, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ipAddress: 35.196.219.140
-  port: 7777
+  manager: {fileID: 0}
+  showGUI: 1
+  offsetX: 0
+  offsetY: 0
 --- !u!4 &520070225
 Transform:
   m_ObjectHideFlags: 0
