@@ -22,8 +22,16 @@ namespace LudumDare39
             }
         }
 
+        void OnPlayerConnected(NetworkPlayer player)
+        {
+            CmdSpawn(true);
+        }
+
         public void CmdSpawn(bool alwasySpawnNewInstance)
         {
+            Vector3 spawnPosition = spawnLocation.position;
+            Vector3 spawnVelocity = Vector3.zero;
+            Quaternion spawnRotation = spawnLocation.rotation;
             if (NetworkServer.active == true)
             {
                 // Check if there's an instance already
@@ -31,6 +39,11 @@ namespace LudumDare39
                 {
                     if (alwasySpawnNewInstance == true)
                     {
+                        // HACK: on respawn, copy the position and rotation of the original object
+                        spawnPosition = spawnedInstance.transform.position;
+                        spawnRotation = spawnedInstance.transform.rotation;
+                        spawnVelocity = spawnedInstance.GetComponent<Rigidbody>().velocity;
+
                         // Despawn this instance
                         CmdDeSpawn();
                     }
@@ -40,10 +53,14 @@ namespace LudumDare39
                         return;
                     }
                 }
-                
-                // Spawn a new instance
-                spawnedInstance = Instantiate(golfBall.gameObject, spawnLocation.position, Quaternion.identity);
+
+                // HACK: on respawn, paste the position and rotation of the last object
+                spawnedInstance = Instantiate(golfBall.gameObject, spawnPosition, spawnRotation);
                 spawnedInstance.GetComponent<SyncPlayer>().StartingPosition = spawnLocation.position;
+                spawnedInstance.GetComponent<Rigidbody>().velocity = spawnVelocity;
+
+                // Spawn a new instance
+                Debug.Log("Spawning golf ball");
                 NetworkServer.Spawn(spawnedInstance);
             }
         }
@@ -52,6 +69,7 @@ namespace LudumDare39
         {
             if(spawnedInstance)
             {
+                Debug.Log("Despawning golf ball");
                 NetworkServer.Destroy(spawnedInstance);
                 spawnedInstance = null;
             }
