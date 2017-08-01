@@ -13,8 +13,8 @@ public class TestServer : MonoBehaviour {
         Network.Connect(ipAddress, port);
     }
 
-    void OnFailedToConnect(NetworkConnectionError error)
-    {
-        Debug.Log("Could not connect to server: " + error);
-    }
+    //void OnFailedToConnect(NetworkConnectionError error)
+    //{
+    //    Debug.Log("Could not connect to server: " + error);
+    //}
 }
