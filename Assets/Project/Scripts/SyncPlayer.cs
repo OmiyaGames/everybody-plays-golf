@@ -21,7 +21,7 @@ namespace LudumDare39
         Vector3 startingPosition;
         [SyncVar]
         float syncTime;
-        [SyncVar]
+        [SyncVar(hook = "RecoverEnergy")]
         int gameId;
 
         MovePlayer player = null;
@@ -36,6 +36,7 @@ namespace LudumDare39
             }
         }
 
+#if !SERVER
         public static GameSettings Settings
         {
             get
@@ -43,6 +44,7 @@ namespace LudumDare39
                 return Singleton.Get<GameSettings>();
             }
         }
+#endif
 
         public Vector3 StartingPosition
         {
@@ -95,7 +97,7 @@ namespace LudumDare39
                 return waitForSync;
             }
         }
-        #endregion
+#endregion
 
         void Start()
         {
@@ -118,15 +120,22 @@ namespace LudumDare39
         readonly List<ServerManager.Direction> queuedDirections = new List<ServerManager.Direction>();
         readonly HashSet<int> readIds = new HashSet<int>();
 
+#if SERVER
         public void SetupNextGame()
         {
             // Increase game ID
             gameId += 1;
+        }
+#endif
 
+        public void RecoverEnergy(int newGameId)
+        {
+#if !SERVER
             // Since we're in a new game, increase player energy settings to max
             // Using LastMaxEnergy, just in case the game hasn't been setup yet.  This prevents some weird edge cases.
-            Settings.LastGameID = gameId;
+            Settings.LastGameID = newGameId;
             Settings.CurrentEnergy = Settings.LastMaxEnergy;
+#endif
         }
 
         void Update()
