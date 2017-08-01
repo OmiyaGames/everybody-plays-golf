@@ -137,7 +137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c44cc0b110bc4242a8844c89e367c56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseUrl: http://omiyagames.com/epg_ld39/
+  baseUrl: https://omiyagames.com/epg_ld39/
   reconnectAfter: 3
   spawnScript: {fileID: 114015378166899030}
   getScoresFileName: GetDirections.php

@@ -68,7 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c379bc8ff44efbc4b96f6f651abf3b7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseUrl: http://omiyagames.com/epg_ld39/
+  baseUrl: https://omiyagames.com/epg_ld39/
   reconnectAfter: 3
   addScoreFileName: AddDirection.php
 --- !u!114 &114929818310759594
