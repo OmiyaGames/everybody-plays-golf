@@ -108,6 +108,16 @@ namespace LudumDare39
 #endif
         }
 
+        public void RecoverEnergy(int newGameId)
+        {
+#if !SERVER
+            // Since we're in a new game, increase player energy settings to max
+            // Using LastMaxEnergy, just in case the game hasn't been setup yet.  This prevents some weird edge cases.
+            Settings.LastGameID = newGameId;
+            Settings.CurrentEnergy = Settings.LastMaxEnergy;
+#endif
+        }
+
 #if SERVER
         const int IdIndex = 0;
         const int TimeIndex = IdIndex + 1;
@@ -120,22 +130,10 @@ namespace LudumDare39
         readonly List<ServerManager.Direction> queuedDirections = new List<ServerManager.Direction>();
         readonly HashSet<int> readIds = new HashSet<int>();
 
-#if SERVER
         public void SetupNextGame()
         {
             // Increase game ID
             gameId += 1;
-        }
-#endif
-
-        public void RecoverEnergy(int newGameId)
-        {
-#if !SERVER
-            // Since we're in a new game, increase player energy settings to max
-            // Using LastMaxEnergy, just in case the game hasn't been setup yet.  This prevents some weird edge cases.
-            Settings.LastGameID = newGameId;
-            Settings.CurrentEnergy = Settings.LastMaxEnergy;
-#endif
         }
 
         void Update()
