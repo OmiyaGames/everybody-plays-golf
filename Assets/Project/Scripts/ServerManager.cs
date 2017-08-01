@@ -45,7 +45,7 @@ namespace LudumDare39
 
 #if SERVER
         float lastAttemptAtConnecting;
-        bool isReady = false;
+        //bool isReady = false;
 
         void Start()
         {
@@ -56,14 +56,14 @@ namespace LudumDare39
 
         private void RemoteSettings_Updated()
         {
-            isReady = true;
+            //isReady = true;
             Reconnect();
         }
 
         private void Update()
         {
-            if(isReady == true)
-            {
+            //if(isReady == true)
+            //{
                 if((NetworkServer.active == false) && ((Time.time - lastAttemptAtConnecting) > reconnectAfter))
                 {
                     Reconnect();
@@ -72,7 +72,7 @@ namespace LudumDare39
                 {
                     spawnScript.CmdSpawn(false);
                 }
-            }
+            //}
         }
 
         void Reconnect()

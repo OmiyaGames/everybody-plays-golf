@@ -11,7 +11,6 @@ namespace LudumDare39
         [SerializeField]
         Transform spawnLocation;
 
-
         GameObject spawnedInstance = null;
 
         public bool IsSpawned
@@ -22,10 +21,10 @@ namespace LudumDare39
             }
         }
 
-        void OnPlayerConnected(NetworkPlayer player)
-        {
-            CmdSpawn(true);
-        }
+        //void OnPlayerConnected(NetworkPlayer player)
+        //{
+        //    CmdSpawn(true);
+        //}
 
         public void CmdSpawn(bool alwasySpawnNewInstance)
         {
