@@ -32,7 +32,7 @@ namespace LudumDare39
             RemoteSettingsReady = 1 << 1,
             GameSettingsReady = 1 << 2,
             CursorReady = 1 << 3,
-            ConnectionReady = RemoteSettingsReady | CursorReady,
+            ConnectionReady = GameSettingsReady | CursorReady,
             AllReady = RemoteSettingsReady | GameSettingsReady | CursorReady
         }
 
@@ -77,6 +77,11 @@ namespace LudumDare39
         MenuState lastState = MenuState.Start;
         MenuState stateAfterEnteringName = MenuState.Playing;
 
+#if DEBUG
+        [SerializeField]
+        UnityEngine.UI.Text checkState;
+#endif
+
         readonly Dictionary<MenuState, IAnimatedMenu> stateToMenuMap = new Dictionary<MenuState, IAnimatedMenu>();
 
         public static MenuCollection Instance
@@ -114,7 +119,7 @@ namespace LudumDare39
         {
             get
             {
-                return ((setupState == SetupState.AllReady) && (ClientManager.Instance) && (ClientManager.Instance.IsClientConnected == true));
+                return ((setupState == SetupState.ConnectionReady) && (ClientManager.Instance) && (ClientManager.Instance.IsClientConnected == true));
             }
         }
 
@@ -193,6 +198,11 @@ namespace LudumDare39
                 setupState |= SetupState.CursorReady;
             }
             UpdateMenuVisibility();
+
+#if DEBUG
+            checkState.enabled = true;
+            checkState.text = "setupState: " + setupState + "\nIsConnected: " + IsConnected + "\nCurrentState: " + CurrentState;
+#endif
         }
 
         private void SetupSettings()
