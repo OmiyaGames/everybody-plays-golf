@@ -708,7 +708,7 @@ Prefab:
     - target: {fileID: 224957163110031548, guid: 1ba4494e0df33c447aae50396efed356,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: -839.6008
+      value: -829.8948
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1ba4494e0df33c447aae50396efed356, type: 2}
@@ -833,6 +833,11 @@ Prefab:
     - target: {fileID: 4144780063095634, guid: 2ff8b471a0394904b9399471853a3671, type: 2}
       propertyPath: m_RootOrder
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114717289154993626, guid: 2ff8b471a0394904b9399471853a3671,
+        type: 2}
+      propertyPath: baseUrl
+      value: http://omiyagames.com/epg_ld39/
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114037869312545012, guid: 2ff8b471a0394904b9399471853a3671, type: 2}
