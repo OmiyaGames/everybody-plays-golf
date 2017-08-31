@@ -84,6 +84,11 @@ namespace LudumDare39
 
         readonly Dictionary<MenuState, IAnimatedMenu> stateToMenuMap = new Dictionary<MenuState, IAnimatedMenu>();
 
+        public bool CompareState(SetupState state)
+        {
+            return ((setupState & state) != 0);
+        }
+
         public static MenuCollection Instance
         {
             get
@@ -119,7 +124,7 @@ namespace LudumDare39
         {
             get
             {
-                return ((setupState == SetupState.ConnectionReady) && (ClientManager.Instance) && (ClientManager.Instance.IsClientConnected == true));
+                return ((CompareState(SetupState.ConnectionReady) == true) && (ClientManager.Instance) && (ClientManager.Instance.IsClientConnected == true));
             }
         }
 
@@ -187,12 +192,12 @@ namespace LudumDare39
 
         private void Update()
         {
-            if (((setupState & SetupState.GameSettingsReady) == 0) && (SyncPlayer.Instance != null))
+            if ((CompareState(SetupState.GameSettingsReady) == false) && (SyncPlayer.Instance != null))
             {
                 SetupSettings();
                 setupState |= SetupState.GameSettingsReady;
             }
-            if (((setupState & SetupState.CursorReady) == 0) && (MoveCursor.Instance != null))
+            if ((CompareState(SetupState.CursorReady) == false) && (MoveCursor.Instance != null))
             {
                 MoveCursor.Instance.IsControlEnabled = false;
                 setupState |= SetupState.CursorReady;

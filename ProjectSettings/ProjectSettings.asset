@@ -688,7 +688,7 @@ PlayerSettings:
   facebookSdkVersion: 7.9.1
   apiCompatibilityLevel: 2
   cloudProjectId: 96f0c2da-459f-46b3-b5e7-00987a9486f4
-  projectName: Ludum Dare 39
+  projectName: Everybody Plays Golf
   organizationId: omiya-games
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
